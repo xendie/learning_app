@@ -1,0 +1,224 @@
+.danger {
+	color: red;
+}
+.success {
+	color: green;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans", sans-serif;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    /*background-color: #000; *//* Fallback background */
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+.gradient-background {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(0deg, #376E87 0%, #184674 100%);
+    transform-origin: center;
+    animation: rotate-gradient 10s infinite linear;
+    z-index: -1000;
+}
+
+@keyframes rotate-gradient {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.login-container {
+  color: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: rgba(55, 110, 135, 0.5);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.login-form{
+
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #ccc;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: rgba(24,70,116, 0.5);
+    color: white;
+}
+.input-group input:active{
+  border: none;
+  color: white;
+}
+.input-group input:focus{
+  outline: none;
+  color: white;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #184674;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background-color: #163d63;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.signup-link a {
+    color: #aad4ff;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+#particle-container{
+  z-index: -999;
+}
+
+/* particles */
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  animation: floatAndWiggle linear infinite;
+  opacity: 0; /* Initially invisible */
+}
+
+/* Combined keyframes for floating, wiggling, fading in, and fading out */
+@keyframes floatAndWiggle {
+  0% {
+    transform: translateY(110vh) translateX(0); /* Start at bottom */
+    opacity: 0; /* Fully invisible */
+  }
+  10% {
+    opacity: 1; /* Fully visible by 10% */
+  }
+  25% {
+    transform: translateY(75vh) translateX(-20px); /* Move up and slightly left */
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(50vh) translateX(20px); /* Continue up and slightly right */
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(20vh) translateX(-20px); /* Continue up and slightly left */
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-30vh) translateX(20px); /* Off screen and slightly right */
+    opacity: 0; /* Fully faded out */
+  }
+}
+
+.background-text{
+  position: absolute;
+  display: flex;
+  align-items: justify-content;
+  font-size: 18em;
+  z-index: -900;
+  color: rgba(255,255,255, 0.03);
+  font-family: "Anton", sans-serif;
+}
+.background-text span{
+  font-family: "Anton", sans-serif;
+}
+/*
+dialog{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width 400px;
+} */
+
+.modal {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    padding: 8rem;
+}
+
+dialog[close] {
+    animation: myFadeOut 0.3s ease normal;
+}
+
+dialog[open] {
+    animation: myFadeIn 0.2s ease normal;
+  }
+  
+@keyframes myFadeIn{
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+@keyframes myFadeOut{
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }

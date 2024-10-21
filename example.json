@@ -1,0 +1,52 @@
+
+// dao.insert_practice_set
+{
+    "user_id": "1", 
+    "set_name": "maths", 
+    "private": "0", // optional, 1(private) by default
+    "tags" : ["math", "analytics", "algebra"], // optional
+    "questions_list" : [
+        {
+            "question": "2+2?",
+            "answer": "4"
+        },
+        {
+            "question": "10/2?",
+            "answer": "5"
+        },
+        {
+            "question": "15*3?",
+            "answer": "45"
+        },
+        {
+            "question": "10+2?",
+            "answer": "12"
+        }
+    ] 
+}
+
+// update_practice_set
+{
+    "set_id"
+    "set_name" : "my new set",
+    "private" : "1",
+    "remove_items" : ["10", "11", "12"], // ids
+    "update_items"
+    "add_items" : [
+        {   
+            "item_id" : "1",
+            "question" : " ",
+            "answer" : 
+        },
+        {
+            "item_id" : "1",
+            "question" : " ",
+            "answer" : 
+        },
+        {
+            "item_id" : "1",
+            "question" : " ",
+            "answer" : 
+        }
+    ]
+}
