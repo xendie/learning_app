@@ -158,7 +158,11 @@ def get_practice_sets():
     
     response = get_one_user_practice_sets(get_db(), session['user_id'])
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 # Get a specific practice set
 @app.route('/get_full_practice_set', methods = ['GET'])
@@ -171,7 +175,11 @@ def get_full_practice_set():
 
     response = get_specific_practice_set(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 # Insert set
 @app.route('/insert_set', methods = ['POST'])
@@ -183,7 +191,11 @@ def insert_set():
     request_payload = request.get_json()
     response = insert_practice_set(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 @app.route('/update_set', methods = ['PATCH'])
 @login_required
@@ -194,7 +206,11 @@ def update_set():
     request_payload = request.get_json()
     response = update_practice_set(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 @app.route('/delete_set', methods = ['DELETE'])
 @login_required
@@ -204,7 +220,11 @@ def delete_set():
     request_payload = request.get_json()
     response = delete_practice_set(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 @app.route('/add_favorite_set', methods = ["POST"])
 @login_required
@@ -214,7 +234,11 @@ def add_favorite_set():
     request_payload = request.get_json()
     response = add_set_to_favorites(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 @app.route('/remove_favorite_set', methods = ['DELETE'])
 @login_required
@@ -224,7 +248,11 @@ def remove_favorite_set():
     request_payload = request.get_json()
     response = remove_set_from_favorites(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 @app.route('/add_practice_session', methods = ['POST'])
 @login_required
@@ -234,7 +262,11 @@ def add_practice_session():
     request_payload = request.get_json()
     response = insert_practice_session(get_db(), session['user_id'], request_payload)
 
-    return jsonify(response)
+    # Assuming 'response' is a tuple (message, status_code)
+    if isinstance(response, tuple) and len(response) == 2:
+        return jsonify(message=response[0]), response[1]
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 #======= END ROUTES / API END-POINTS ======= 
 

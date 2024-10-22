@@ -46,7 +46,7 @@ def check_if_set_is_public(request_payload, cursor):
     return True
 
 
-
+# Create a trigger in DB - check if set is_deleted before creating a practice session
 def insert_practice_session(connection, user_id, request_payload):
     cursor = connection.cursor()
 
@@ -84,36 +84,3 @@ def insert_practice_session(connection, user_id, request_payload):
         return f"Error {str(e)}", 501
     finally:
         cursor.close()
-
-
-"""
-{
-    "set_id" : 40,
-    "answers_list": [
-        {
-            "item_id": 1,
-            "user_answer" : 1,
-            "time_started" : "2024-10-22 16:10:00.000",
-            "time_ended" : "2024-10-22 16:11:00.000"
-        }
-        {
-            "item_id": 2,
-            "user_answer" : 1,
-            "time_started" : "2024-10-22 16:11:00.000",
-            "time_ended" : "2024-10-22 16:12:00.000"
-        },
-        {
-            "item_id": 3,
-            "user_answer" : 1,
-            "time_started" : "2024-10-22 16:12:00.000",
-            "time_ended" : "2024-10-22 16:13:00.000"
-        },
-        {
-            "item_id": 4,
-            "user_answer" : 1,
-            "time_started" : "2024-10-22 16:13:00.000",
-            "time_ended" : "2024-10-22 16:14:00.000"
-        }
-    ]
-}
-"""
