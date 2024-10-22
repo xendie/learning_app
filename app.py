@@ -10,7 +10,7 @@ from functools import wraps
 #import logging
 
 from daos.sql_connection import get_sql_connection
-from daos.dao_practice_sets import get_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set
+from daos.dao_practice_sets import get_one_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
 
 # App configuration
 
@@ -155,7 +155,7 @@ def get_practice_sets():
     print('current session: ', session)
     print('get_practice_sets route accessed')
     
-    response = get_user_practice_sets(get_db(), session['user_id'])
+    response = get_one_user_practice_sets(get_db(), session['user_id'])
 
     return jsonify(response)
 
@@ -195,6 +195,35 @@ def update_set():
 
     return jsonify(response)
 
+@app.route('/delete_set', methods = ['DELETE'])
+@login_required
+def delete_set():
+    print('current session: ', session)
+    print('delete_set route accessed')
+    request_payload = request.get_json()
+    response = delete_practice_set(get_db(), session['user_id'], request_payload)
+
+    return jsonify(response)
+
+@app.route('/add_favorite_set', methods = ["POST"])
+@login_required
+def add_favorite_set():
+    print('current session: ', session)
+    print('add_set_to_favorites route accessed')
+    request_payload = request.get_json()
+    response = add_set_to_favorites(get_db(), session['user_id'], request_payload)
+
+    return jsonify(response)
+
+@app.route('/remove_favorite_set', methods = ['DELETE'])
+@login_required
+def remove_favorite_set():
+    print('current session: ', session)
+    print('add_set_to_favorites route accessed')
+    request_payload = request.get_json()
+    response = remove_set_from_favorites(get_db(), session['user_id'], request_payload)
+
+    return jsonify(response)
 
 #======= END ROUTES / API END-POINTS ======= 
 

@@ -25,28 +25,32 @@
     ] 
 }
 
-// update_practice_set
 {
-    "set_id"
-    "set_name" : "my new set",
-    "private" : "1",
-    "remove_items" : ["10", "11", "12"], // ids
-    "update_items"
-    "add_items" : [
+    "set_id" : 36, // int mandatory
+    "set_name" : "coolest set eveeeeeer", // Practice set name, string, optional
+    "private" : "1", // If set is available to everyone or just the author. 1 - only author 0 - everyone, int, optional 
+    "update_items" : [ // practice items to be updated, list of dictionaries [{"item_id}: "", {"question"}: "", {"answer"}: ""], item_id is mandatory, you can update just the question or just the answer
         {   
-            "item_id" : "1",
-            "question" : " ",
-            "answer" : 
+            "item_id" : "13",
+            "question" : "What's the capital of France?",
+            "answer" : "Paris"
         },
         {
-            "item_id" : "1",
-            "question" : " ",
-            "answer" : 
-        },
-        {
-            "item_id" : "1",
-            "question" : " ",
-            "answer" : 
+            "item_id" : "14",
+            "question" : "What's the capital of Greece?",
+            "answer" : "Athens"
         }
-    ]
+    ],
+    "add_items" : [ // practice items to be added to the list, list of dictionaries [{"question"}: "", {"answer"}: ""], question and answer are mandatory
+        {
+            "question": "What's the capital of ",
+            "answer": "nope"
+        },
+        {
+            "question": "have you ever eaten a sanwich?",
+            "answer": "yes"
+        }
+    ],
+    "remove_items" : [31, 32], // practice items to be removed, list of ints [int, int, ...]
+    "tags" : ["lami"] // all practice set tags that should be assigned to this set, list of strings [string, string, ...], if "tags" not included in request no changes will be made, if "tags" is sent empty then all tags will be removes
 }
