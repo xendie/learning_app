@@ -54,3 +54,34 @@
     "remove_items" : [31, 32], // practice items to be removed, list of ints [int, int, ...]
     "tags" : ["lami"] // all practice set tags that should be assigned to this set, list of strings [string, string, ...], if "tags" not included in request no changes will be made, if "tags" is sent empty then all tags will be removes
 }
+
+
+{
+    "set_id" : 40,
+    "answers_list": [
+        {
+            "item_id": 1,
+            "user_answer" : 1,
+            "time_started" : "2024-10-22 16:10:00.000",
+            "time_ended" : "2024-10-22 16:11:00.000"
+        }
+        {
+            "item_id": 2,
+            "user_answer" : 1,
+            "time_started" : "2024-10-22 16:11:00.000",
+            "time_ended" : "2024-10-22 16:12:00.000"
+        },
+        {
+            "item_id": 3,
+            "user_answer" : 1,
+            "time_started" : "2024-10-22 16:12:00.000",
+            "time_ended" : "2024-10-22 16:13:00.000"
+        },
+        {
+            "item_id": 4,
+            "user_answer" : 1,
+            "time_started" : "2024-10-22 16:13:00.000",
+            "time_ended" : "2024-10-22 16:14:00.000"
+        }
+    ]
+}

@@ -11,6 +11,7 @@ from functools import wraps
 
 from daos.sql_connection import get_sql_connection
 from daos.dao_practice_sets import get_one_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
+from daos.dao_practice_sessions import insert_practice_session
 
 # App configuration
 
@@ -219,9 +220,19 @@ def add_favorite_set():
 @login_required
 def remove_favorite_set():
     print('current session: ', session)
-    print('add_set_to_favorites route accessed')
+    print('remove_favorite_set route accessed')
     request_payload = request.get_json()
     response = remove_set_from_favorites(get_db(), session['user_id'], request_payload)
+
+    return jsonify(response)
+
+@app.route('/add_practice_session', methods = ['POST'])
+@login_required
+def add_practice_session():
+    print('current session: ', session)
+    print('add_practice_session route accessed')
+    request_payload = request.get_json()
+    response = insert_practice_session(get_db(), session['user_id'], request_payload)
 
     return jsonify(response)
 
