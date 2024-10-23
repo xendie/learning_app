@@ -1,4 +1,3 @@
-import traceback
 
 def check_if_user_owns_this_set(request_payload, user_id, cursor):
     if 'set_id' not in request_payload:
@@ -332,7 +331,6 @@ def remove_set_from_favorites(connection, user_id, request_payload):
 
         if cursor.rowcount == 0:
             return "No favorites to delete", 200
-
 
         connection.commit()
         return "Set has been removed from favorites", 204

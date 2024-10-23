@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-Bcrypt==1.0.1
+Flask-Cors==5.0.0
+Flask-WTF==1.2.1
+mysql-connector==2.2.9
+mysql-connector-python==9.0.0
+requests==2.32.3
+WTForms==3.1.2
+python-dotenv==1.0.1
+email_validator==2.2.0

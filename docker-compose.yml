@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:9.0.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./app_db.sql:/docker-entrypoint-initdb.d/app_db.sql  # Mount the SQL file
+
+volumes:
+  mysql-data:
