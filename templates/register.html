@@ -1,120 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style src="{{ url_for('static', filename='css/style.css') }}">
-    <title>Register</title>
-
-    <style>
-        body{
-            font-family: 'Calibri', 'Sans-Serif' ;
-        }
-        form {
-            border: 1px solid black;
-            padding: 20px 20px 50px 20px;
-            max-width: 300px;
-            margin: 0 auto;
-            position: relative;
-        }
-        input[type="text"], input[type="password"]{
-            position: absolute;
-            padding: 5px;
-            right: 20px;
-        }
-        input[type="submit"]{
-            position: absolute;
-            width: 260px;
-            padding: 10px 0;
-            text-align: center;
-        }
-        #register-title{
-            text-align: center;
-        }
-        #already-have-account{
-            text-align: center;
-        }
-        #password-error, #email-error {
-            color: red;
-        }
-        .error-messeges{
-            text-align: center;
-        }
-    </style>
-
-    <script>
-        function validateForm() {
-            // reset error messages
-            document.getElementById('password-error').innerText = ''
-            document.getElementById('email-error').innerText = ''
-
-
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            const email = document.getElementById('email').value
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            let response = true
-            if (password !== confirmPassword) {
-                document.getElementById('password-error').innerText = 'Passwords must match!';
-                response = false;  // Prevent form submission
-            }
-            // validate e-mail
-            if (!emailPattern.test(email)){
-                document.getElementById('email-error').innerText = 'Enter a proper e-mail address!';
-                response = false;
-            }
-            if (response === true){
-                return true;    
-            } else {
-                return false;
-              // Allow form submission
-            }
-        }
-    </script>
-
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="register-container">
     <h1 id="register-title" >Register</h1>
-    
-    <form method="POST" action="{{ url_for('register') }}" onsubmit="return validateForm()">
+    <form class="registration-form" method="POST" action="{{ url_for('register') }}" onsubmit="return validateForm()">
         {{ form.hidden_tag() }}
+        <div class="form-group input-group">
+            <label for="username">Username</label>
+            {{ form.username() }}
+        </div>
+        <div class="form-group input-group">
+            <label for="password">Password</label>
+            {{ form.password() }}
+        </div>
+        <div class="form-group input-group">
+            <label for="confirm_password">Confirm Password</label>
+            {{ form.confirm_password() }}
+        </div>
         
-        <label for="username">Username</label>
-        {{ form.username() }}
-        <br><br>
-        
-        <label for="password">Password</label>
-        {{ form.password() }}
-        <br><br>
-
-        <label for="confirm_password">Confirm Password</label>
-        {{ form.confirm_password() }}
-        <br><br>
-
-        <label for="email">E-mail</label>
-        {{ form.email() }}
-        <br><br>
-        
-        <div id="password-error"></div>
-        <div id="email-error"></div>
-
-        <input type="submit" value="Register">
+        <div class="form-group input-group">
+            <label for="email">E-mail</label>
+            {{ form.email() }}
+        </div>
+        <div class="form-group">
+            <div id="password-error"></div>
+            <div id="email-error"></div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Register">
+        </div>
     </form>
-    <div class="error-messeges">
+    <p id ="already-have-account">Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
+    <div class="flash-messages">
         {% for error in form.username.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <p class="danger">{{ error }}</p>
         {% endfor %}
         {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <p class="danger">{{ error }}</p>
         {% endfor %}
         {% for error in form.confirm_password.errors %}
-            <br><span style="color: red;">{{ error }}</span>
+            <p class="danger">{{ error }}</p>
         {% endfor %}
         {% for error in form.email.errors %}
-            <br><span style="color: red;">{{ error }}</span>
+            <p class="danger">{{ error }}</p>
         {% endfor %}
     </div>
-    <p id ="already-have-account">Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
-</body>
-</html>
+</div>
+{% endblock %}

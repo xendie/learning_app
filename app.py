@@ -7,6 +7,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 #import json
 from functools import wraps
+from datetime import timedelta
 #import logging
 
 from daos.sql_connection import get_sql_connection
@@ -20,7 +21,8 @@ CORS(app, resources={r"/*": {"origins": ["http://localhost:5000", "http://127.0.
 app.config['SESSION_COOKIE_SECURE'] = False  # For development without HTTPS
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.secret_key = os.getenv('SECRET_KEY')
+app.secret_key = os.getenv('SECRET_KEY') # required for session management
+app.permanent_session_lifetime = timedelta(days = 1) # how long a permanent session should last; need to set a session as permanent to be applicable because it is not by default
 bcrypt = Bcrypt(app) # For creating password hashes
 
 # Open a database connection at the start of a request and store it in g
@@ -87,7 +89,10 @@ def login_required(f):
 def home():
     print('current session: ', session)
     print('home route accessed')
-    return '<h1>Hello there</h1>'
+    if 'user_id' in session:
+        return render_template('index.html', username = session['username'])
+    else:
+        return render_template('index.html')
 
 # Authentication
 @app.route('/login', methods=['GET', 'POST'])
@@ -95,6 +100,7 @@ def login():
     form = LoginForm()
 
     if 'user_id' in session:
+        flash('Already logged in.')
         return redirect(url_for('home'))
 
     if form.validate_on_submit():
@@ -110,6 +116,7 @@ def login():
         if user and bcrypt.check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
+            session.permanent = True # session expries after 1 day; configuration in variable app.permanent_session_lifetime 
             flash('Login successful!', 'success')
             return redirect(url_for('home'))
         else:
@@ -121,6 +128,9 @@ def login():
 def register():
     print('Current session: ', session)
     print('Register route accessed')
+    if 'user_id' in session:
+        flash('You need to log out to register a new account.')
+        return redirect(url_for('home'))
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -144,9 +154,10 @@ def register():
 def logout():
     print('Current session: ', session)
     print('Logout route accessed')
-    session.clear()
-    flash('You have been logged out.', 'success')
-    return redirect(url_for('login'))
+    if 'user_id' in session: # to prevent the flash from showing if someone accesses logout route while not being logged in
+        session.clear()
+        flash('You have been logged out.', 'success')
+    return redirect(url_for('home'))
 
 
 # Get a list of practice sets for the logged in user
