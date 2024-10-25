@@ -8,14 +8,39 @@
         <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
+        <script>
+            $(document).ready(function() {
+                const $mobileMenu = $('#mobile-menu');
+                const $navList = $('.navbar-items');
+
+                $mobileMenu.on('click', function() {
+                    $navList.toggleClass('active'); // toggle hamburger button
+                });
+            });
+            
+        </script>
     </head>
     <body>
         <div class="gradient-background"></div>
-        <nav>
+        <nav class="navbar">
+            <div class="logo">/Learn</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
             <ul class="navbar-items">
                 <li><a href="/">Home</a></li>
                 <li><a href="#">Practice</a></li>
-                <li><a href="#">History</a></li>
+                {% if username %}
+                    <li><a href="my_sets">My sets</a></li>
+                    <li><a href="#">History</a></li>
+                {% endif %}
+                {% if username %}
+                    <li><a class="mobile-nav-item" href="/logout">Log Out</a></li>
+                {% else %}
+                    <li><a class="mobile-nav-item" href="/login">Log In</a></li>
+                {% endif %}
             </ul>
             <ul class="navbar-right">
                 {% if username %}
@@ -31,4 +56,5 @@
 
         </div>
     </body>
+    
 </html>

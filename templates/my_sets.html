@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}My sets{% endblock %}
+{% block content %}
+    <div class="main-content">
+        <h1>My sets</h1>
+        <div class="my-sets-table">
+            <table class="practice-sets-table">
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: 'http://localhost:5000/get_practice_sets',
+                method: 'GET',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response){
+                    console.log('Session data:', response);
+
+                    if (response.message) {
+                        let table = '';
+                        $.each(response.message, function(index, practiceSet) {
+                            console.log(practiceSet.set_name);
+                            table += '<tr data-id="' + practiceSet.set_id + '" data-name="' + practiceSet.set_name + '" userId="' + practiceSet.username+'">' +
+                                '<td>' + practiceSet.set_id + '</td>' +
+                                '<td>' + practiceSet.set_name + '</td>' +
+                                '<td>' + practiceSet.username + '</td>' +
+                                '</tr>';
+                        });
+                        $(".practice-sets-table").find('tbody').empty().html(table);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

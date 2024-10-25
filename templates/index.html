@@ -7,7 +7,11 @@
     {% else %}
         <h1 style="margin-top: 20px">Welcome</h1>
     {% endif %}
-    <p>It looks like you've come to the right place to learn!</p>
+    <p style="margin-top: 20px">It looks like you've come to the right place to learn!</p>
+    
+    {% if not username %}
+        <p style="margin-top: 20px">Practice with publically available sets or create an account to create your own. Enjoy!</p>
+    {% endif %}
     {% with messages = get_flashed_messages(with_categories=true)%}
         {% for category, message in messages %}
         <p class="{{category}}">{{message}}</p>

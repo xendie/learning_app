@@ -129,7 +129,7 @@ def register():
     print('Current session: ', session)
     print('Register route accessed')
     if 'user_id' in session:
-        flash('You need to log out to register a new account.')
+        flash('You first need to log out to register a new account.')
         return redirect(url_for('home'))
 
     form = RegistrationForm()
@@ -159,6 +159,18 @@ def logout():
         flash('You have been logged out.', 'success')
     return redirect(url_for('home'))
 
+
+@app.route('/my_sets')
+@login_required
+def my_sets():
+    print('Current session: ', session)
+    print('my_sets route accessed')
+
+    return render_template('my_sets.html', username = session['username']) # need to pass session so that nav bar works correctly
+
+# ===========================================================
+#                           APIs
+# ===========================================================
 
 # Get a list of practice sets for the logged in user
 @app.route('/get_practice_sets', methods = ['GET'])
