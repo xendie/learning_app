@@ -2,8 +2,8 @@
 {% block title %}My sets{% endblock %}
 {% block content %}
     <div class="main-content">
-        <h1>My sets</h1>
         <div class="my-sets-table">
+            <h1>My sets</h1>
             <table class="practice-sets-table">
                 <tbody></tbody>
             </table>
@@ -26,9 +26,12 @@
                         $.each(response.message, function(index, practiceSet) {
                             console.log(practiceSet.set_name);
                             table += '<tr data-id="' + practiceSet.set_id + '" data-name="' + practiceSet.set_name + '" userId="' + practiceSet.username+'">' +
-                                '<td>' + practiceSet.set_id + '</td>' +
-                                '<td>' + practiceSet.set_name + '</td>' +
-                                '<td>' + practiceSet.username + '</td>' +
+                                    '<td class="index-cell">' + index + '</td>' +
+                                    '<td>' + practiceSet.set_name + '</td>' +
+                                    '<td class="options-cell">' +
+                                        '<button class="btn-practice">Practice</button>' +
+                                        '<button class="btn-edit">Edit</button>' +
+                                    '</td>' +
                                 '</tr>';
                         });
                         $(".practice-sets-table").find('tbody').empty().html(table);
@@ -42,3 +45,6 @@
         });
     </script>
 {% endblock %}
+
+
+

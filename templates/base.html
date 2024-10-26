@@ -21,7 +21,9 @@
         </script>
     </head>
     <body>
+
         <div class="gradient-background"></div>
+        <div class="scrollable-container">
         <nav class="navbar">
             <div class="logo">/Learn</div>
             <div class="menu-toggle" id="mobile-menu">
@@ -50,10 +52,8 @@
                 {% endif %}
             </ul>
         </nav>
-        <div class="container">
-            
-        {% block content %}{% endblock %}
-
+        
+            {% block content %}{% endblock %}
         </div>
     </body>
     

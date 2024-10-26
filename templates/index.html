@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<div class="container">
     <div class="main-content">
     {% if username %}
         <h1 style="margin-top: 20px">Welcome, {{username}}</h1>
@@ -18,4 +19,5 @@
         {% endfor %}
     {% endwith %}
     </div>
+</div>
 {% endblock %}

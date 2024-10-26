@@ -57,13 +57,63 @@ outline: none;
 color: white;
 }
 
-
 .container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.scrollable-container {
+  height: auto;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  /*max-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin-top: 50px;
+  min-width: 400px;
+  min-height: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-sets-table {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.practice-sets-table {
+  background-color: rgba(24,70,116, 0.5);
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
+}
+
+.index-cell {
+  white-space: nowrap;
+  width: 50px;
+}
+
+.options-cell {
+  white-space: nowrap;
+  width: 150px;
+  align-items: center;
+}
+
+.options-cell button {
+  margin: 0 5px;
+}
+
 
 .gradient-background {
     position: fixed;
@@ -226,14 +276,7 @@ nav a:hover {
     }
 }
 
-.main-content {
-  min-width: 400px;
-  min-height: 300px;
-  background-color: rgba(24,70,116, 0.5);
-  border-radius: 16px;
-  text-align: center;
-  padding: 20px;
-}
+
 
 /* flash messages color */
 .danger {
