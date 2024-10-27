@@ -4,6 +4,7 @@
     <div class="main-content">
         <div class="display-tables">
             <h1>My sets</h1>
+            <p class="response-message"></p>
             <div class="options-bar">
                 <div class="options-bar-buttons">
                     <a href="/new_set">
@@ -19,6 +20,7 @@
         </div>
     </div>
     <script>
+
         function setEdit(){
             alert('Edit');
         };
@@ -136,8 +138,18 @@
             });
         }
 
+        function showResponseMessages(){
+            const responseMessage = sessionStorage.getItem("responseMessage");
+            if (responseMessage){
+                $('.response-message').text(responseMessage);
+                $('.response-message').show();
+                sessionStorage.removeItem("responseMessage");
+            }
+        }
+        
         $(document).ready(function(){
             getPracticeSets();
+            showResponseMessages();
         });
     </script>
 {% endblock %}

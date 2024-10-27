@@ -123,11 +123,21 @@ def insert_practice_set(connection, user_id, request_payload):
     cursor = connection.cursor()
     if "set_name" not in request_payload or "questions_list" not in request_payload:
         return "set_name and questions_list are required fields", 400
+    
+    
 
     set_name = request_payload["set_name"]  # required
     questions_list = request_payload["questions_list"] # required
-    private = request_payload.get("private", 0)  # Defaults to 0 if not provided
+    private = request_payload.get("private", 1)  # Defaults to 0 if not provided
     tags_list = request_payload.get("tags", []) # Check if 'tags' is provided, default to an empty list if not
+
+    if len(set_name) == 0: # if set name is empty
+        return "set_name and questions_list are required fields", 400
+    
+    for item in questions_list: # if questions have empty values
+        if len(item['question']) == 0 or len(item['answer']) == 0:
+            return "set_name and questions_list are required fields", 400
+            
 
     query_add_set = """ 
         INSERT INTO practice_set(user_id, set_name, private)

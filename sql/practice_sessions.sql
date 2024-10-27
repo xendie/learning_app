@@ -30,8 +30,33 @@ Failed to add the foreign key constraint. Missing unique key for constraint 'fk_
 
 DELETE FROM practice_set_item WHERE practice_set_id IN (13, 39, 21, 35);
 
-
+USE app;
 SELECT * FROM v_set_questions_all_info WHERE id = 1 AND (private = 0 OR user_id = 1) AND is_deleted = 0;
 
 SELECT id FROM practice_set;
 SHOW OPEN TABLES WHERE In_use > 0;
+
+SELECT * FROM practice_set WHERE user_id = 1;
+
+ALTER TABLE practice_set_item
+ADD CONSTRAINT question CHECK (question <> '');
+
+SELECT * FROM practice_set_item WHERE question = '' OR answer = '';
+
+SELECT * FROM practice_set WHERE set_name = '';
+DELETE FROM practice_set WHERE id = 77;
+
+SELECT id FROM practice_set_item WHERE practice_set_id IN (77, 78, 80, 83, 84, 85);
+DELETE FROM practice_set_item WHERE practice_set_id IN (77, 78, 80, 83, 84, 85);
+
+
+77
+78
+80
+83
+84
+85
+
+DELETE FROM practice_set WHERE id IN (77, 78);
+SELECT * FROM practice_set_item WHERE practice_set_id = 77;
+
