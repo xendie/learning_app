@@ -22,7 +22,7 @@ a {
 }
 
 a:hover{
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 input[type="submit"], button{
@@ -83,7 +83,7 @@ color: white;
   flex-direction: column;
 }
 
-.my-sets-table {
+.display-tables {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -97,6 +97,20 @@ color: white;
   min-width: 600px;
   max-width: 90vw;
   width: 90vw;
+}
+
+.table-practice-set-items {
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
+}
+
+.options-bar {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-start;
+  width: 75vw;
 }
 
 .index-cell {
@@ -507,6 +521,16 @@ dialog{
     align-items: center;
     width 400px;
 } */
+
+.btn-save-set {
+  display: none;
+}
+
+.btn-back-to-my-sets {
+  display: none;
+}
+
+
 
 .modal {
     top: 50%;

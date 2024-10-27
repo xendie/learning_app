@@ -159,7 +159,6 @@ def logout():
         flash('You have been logged out.', 'success')
     return redirect(url_for('home'))
 
-
 @app.route('/my_sets')
 @login_required
 def my_sets():
@@ -167,6 +166,16 @@ def my_sets():
     print('my_sets route accessed')
 
     return render_template('my_sets.html', username = session['username']) # need to pass session so that nav bar works correctly
+
+@app.route('/new_set')
+@login_required
+def new_set():
+    print('Current session: ', session)
+    print('new_set route accessed')
+
+    return render_template('new_set.html', username = session['username']) # need to pass session so that nav bar works correctly
+
+
 
 # ===========================================================
 #                           APIs
@@ -188,7 +197,7 @@ def get_practice_sets():
     return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 # Get a specific practice set
-@app.route('/get_full_practice_set', methods = ['GET'])
+@app.route('/get_full_practice_set', methods = ['GET', 'POST'])
 @login_required
 def get_full_practice_set():
     print('current session: ', session)

@@ -1,4 +1,5 @@
 
+# Function used by other functions
 def check_if_user_owns_this_set(request_payload, user_id, cursor):
     if 'set_id' not in request_payload:
         raise Exception("Failed. No set_id provided")
@@ -19,7 +20,7 @@ def check_if_user_owns_this_set(request_payload, user_id, cursor):
         raise PermissionError("User is unauthorized to update this set.")
     return True
 
-
+# Function used by other functions
 def check_if_set_is_public(request_payload, cursor):
     # public sets can be accessed by anyone
     if 'set_id' not in request_payload:
@@ -85,10 +86,28 @@ def get_specific_practice_set(connection, user_id, request_payload):
     try:
         cursor.execute(query, (practice_set_id, user_id))
         response = []
-
+        """
         for row in cursor:
             print(row)
+            
             response.append(row)
+        """
+
+        for (id, question, answer, user_id, username, set_name, created_timestamp, last_edited_timestamp, private, is_deleted) in cursor:
+            response.append(
+                {
+                    'set_id' : id, 
+                    'question' : question,
+                    'answer' : answer,
+                    'user_id' : user_id,
+                    'username' : username,
+                    'set_name' : set_name,
+                    'created_timestamp' : created_timestamp,
+                    'last_edited_timestamp' : last_edited_timestamp,
+                    'private' : private,
+                    'is_deleted' : is_deleted
+                }
+            )
         
         return response, 200
 
