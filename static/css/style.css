@@ -206,10 +206,6 @@ input:checked + .slider::before {
   transform: translateX(26px); /* Adjusted translation */
 }
 
-.display-inline {
-  
-
-}
 
 
 .navbar-items {
@@ -376,6 +372,29 @@ table, th, td {
 tr:nth-child(even) {
   background-color: rgba(17, 46, 76, 0.5);
 }
+
+/* Practice set page */
+
+.practice-answer {
+  display: none;
+}
+
+.practice-item-toggle {
+  margin: 10px;
+  
+}
+.right-answer-button, .wrong-answer-button {
+  margin: 10px;
+}
+
+.right-answer-button {
+  background-color: #4caf50;
+}
+
+.wrong-answer-button {
+  background-color: rgb(161, 35, 35);
+}
+
 
 /* Log in form */
 /* ============================================*/

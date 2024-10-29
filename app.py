@@ -173,8 +173,26 @@ def new_set():
     print('Current session: ', session)
     print('new_set route accessed')
 
-    return render_template('new_set.html', username = session['username']) # need to pass session so that nav bar works correctly
+    return render_template('new_set.html', username = session['username']) # need to pass session username so that nav bar works correctly
 
+@app.route('/practice/<int:id>')
+def practice(id):
+    print('Current session: ', session)
+    print('practice route accessed')
+
+    if 'user_id' in session:
+        user_id = session['user_id'] 
+    else:
+        user_id = 0 # if the user is not logged in, pass 0 to the SQL query to only access public sets
+    
+    response = get_specific_practice_set(get_db(), user_id, {'practice_set_id' : id})
+    print(response)
+
+    r_status_code = response[1]
+    if r_status_code == 404: # set not found or no permission for the user
+        return "You don't have permission to view this or this doesn't exist.", 404
+
+    return render_template('practice.html', username = session['username'], id = id, response = response[0]) # need to pass session username so that nav bar works correctly
 
 
 # ===========================================================

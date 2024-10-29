@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Practice{% endblock %}
+{% block content %}
+    <div class="main-content">
+        <div class="display-tables">
+            <h1>Practice</h1>
+            <h2>{{response[0]['set_name']}}</h2>
+            
+            <div class="options-bar">
+                <!--
+                <div class="options-bar-buttons">
+                    <a href="/new_set">
+                        <button class="btn-new-set">New set</button>
+                    </a>
+                    <button class="btn-save-set">Save</button>
+                    <button onclick="backToPracticeSets()" class="btn-back-to-my-sets">Back to my sets</button>
+                </div> -->
+                
+            </div>
+            <div class="practice-container">
+                
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const data = {{ response | tojson }};
+        let currentIndex = 0; // Initialize a variable to keep track of the current question
+        let answers = [];
+
+        $(document).ready(function() {
+            // Create a single practice item to display the question and answer
+            const practiceItem = $('<div class="practice-item"></div>');
+            const questionDiv = $('<div class="practice-question"></div>');
+            const answerDiv = $('<div class="practice-answer" style="display: none;"></div>');
+            const toggleButton = $('<button class="practice-item-toggle">Show Answer</button>');
+            const buttonContainer = $('<div class="buttons-container-practice"></div>');
+            const rightButton = $('<button class="right-answer-button">Right</button>');
+            const wrongButton = $('<button class="wrong-answer-button">Wrong</button>');
+
+            // Append elements to the container
+            buttonContainer.append(rightButton);
+            buttonContainer.append(wrongButton);
+
+            practiceItem.append(questionDiv);
+            practiceItem.append(answerDiv);
+            practiceItem.append(toggleButton);
+            practiceItem.append(buttonContainer);
+
+            $('.practice-container').append(practiceItem);
+
+            // Function to display the current question
+            function displayCurrentQuestion() {
+                if (currentIndex < data.length) {
+                    questionDiv.html('<p>' + data[currentIndex].question + '</p>');
+                    answerDiv.html('<p>' + data[currentIndex].answer + '</p>');
+                    
+                    // Reset visibility and toggle button text for each new question
+                    answerDiv.hide(); // Hide the answer by default
+                    questionDiv.show(); // Ensure question is visible
+                    toggleButton.text('Show Answer'); // Reset button text
+                } else {
+                    // Handle the end of the questions
+                    questionDiv.html('<p>No more questions!</p>');
+                    answerDiv.hide();
+                    toggleButton.hide();
+                    buttonContainer.hide();
+
+                    console.log(answers);
+                }
+            }
+
+            // Initial display
+            displayCurrentQuestion();
+
+            // Toggle answer visibility
+            toggleButton.on('click', function() {
+                answerDiv.toggle();
+                if (toggleButton.text() === 'Show Answer') {
+                    toggleButton.text('Hide Answer');
+                } else {
+                    toggleButton.text('Show Answer');
+                }
+            });
+
+            // Right answer button click event
+            rightButton.on('click', function() {
+                console.log('right');
+                answers.push({'item_id' : data[currentIndex].item_id, 'user_answer' : 1})
+                currentIndex++; // Move to the next question
+                displayCurrentQuestion(); // Display the next question
+            });
+
+            // Wrong answer button click event
+            wrongButton.on('click', function() {
+                console.log('wrong');
+                answers.push({'item_id' : data[currentIndex].item_id, 'user_answer' : 0})
+                currentIndex++; // Move to the next question
+                displayCurrentQuestion(); // Display the next question
+            });
+        });
+    </script>
+{% endblock %}
