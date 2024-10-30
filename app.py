@@ -129,7 +129,7 @@ def register():
     print('Current session: ', session)
     print('Register route accessed')
     if 'user_id' in session:
-        flash('You need to log out to register a new account.')
+        flash('You first need to log out to register a new account.')
         return redirect(url_for('home'))
 
     form = RegistrationForm()
@@ -159,6 +159,45 @@ def logout():
         flash('You have been logged out.', 'success')
     return redirect(url_for('home'))
 
+@app.route('/my_sets')
+@login_required
+def my_sets():
+    print('Current session: ', session)
+    print('my_sets route accessed')
+
+    return render_template('my_sets.html', username = session['username']) # need to pass session so that nav bar works correctly
+
+@app.route('/new_set')
+@login_required
+def new_set():
+    print('Current session: ', session)
+    print('new_set route accessed')
+
+    return render_template('new_set.html', username = session['username']) # need to pass session username so that nav bar works correctly
+
+@app.route('/practice/<int:id>')
+def practice(id):
+    print('Current session: ', session)
+    print('practice route accessed')
+
+    if 'user_id' in session:
+        user_id = session['user_id'] 
+    else:
+        user_id = 0 # if the user is not logged in, pass 0 to the SQL query to only access public sets
+    
+    response = get_specific_practice_set(get_db(), user_id, {'practice_set_id' : id})
+    print(response)
+
+    r_status_code = response[1]
+    if r_status_code == 404: # set not found or no permission for the user
+        return "You don't have permission to view this or this doesn't exist.", 404
+
+    return render_template('practice.html', username = session['username'], id = id, response = response[0]) # need to pass session username so that nav bar works correctly
+
+
+# ===========================================================
+#                           APIs
+# ===========================================================
 
 # Get a list of practice sets for the logged in user
 @app.route('/get_practice_sets', methods = ['GET'])
@@ -176,7 +215,7 @@ def get_practice_sets():
     return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
 
 # Get a specific practice set
-@app.route('/get_full_practice_set', methods = ['GET'])
+@app.route('/get_full_practice_set', methods = ['GET', 'POST'])
 @login_required
 def get_full_practice_set():
     print('current session: ', session)

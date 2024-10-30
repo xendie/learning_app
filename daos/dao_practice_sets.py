@@ -1,4 +1,5 @@
 
+# Function used by other functions
 def check_if_user_owns_this_set(request_payload, user_id, cursor):
     if 'set_id' not in request_payload:
         raise Exception("Failed. No set_id provided")
@@ -19,7 +20,7 @@ def check_if_user_owns_this_set(request_payload, user_id, cursor):
         raise PermissionError("User is unauthorized to update this set.")
     return True
 
-
+# Function used by other functions
 def check_if_set_is_public(request_payload, cursor):
     # public sets can be accessed by anyone
     if 'set_id' not in request_payload:
@@ -78,17 +79,41 @@ def get_specific_practice_set(connection, user_id, request_payload):
     cursor = connection.cursor()
 
     # Be able to access only those sets that were created by the user or are not private and those that were not deleted
-    query = "SELECT * FROM v_set_questions_all_info WHERE id = %s AND (private = 0 OR user_id = %s) AND is_deleted = 0" 
+    query = "SELECT * FROM v_set_questions_all_info WHERE id = %s AND (private = 0 OR user_id = %s) AND is_deleted = 0 AND set_is_deleted = 0" 
     print(query)
+
     practice_set_id = request_payload['practice_set_id']
 
     try:
         cursor.execute(query, (practice_set_id, user_id))
         response = []
-
+        """
         for row in cursor:
             print(row)
+            
             response.append(row)
+        """
+
+        for (id, item_id, question, answer, user_id, username, set_name, created_timestamp, last_edited_timestamp, private, is_deleted, set_is_deleted) in cursor:
+            response.append(
+                {
+                    'set_id' : id,
+                    'item_id' : item_id,
+                    'question' : question,
+                    'answer' : answer,
+                    'user_id' : user_id,
+                    'username' : username,
+                    'set_name' : set_name,
+                    'created_timestamp' : created_timestamp,
+                    'last_edited_timestamp' : last_edited_timestamp,
+                    'private' : private,
+                    'is_deleted' : is_deleted,
+                    'set_is_deleted' : set_is_deleted
+                }
+            )
+        
+        if len(response) == 0:
+            return 'Forbidden', 404
         
         return response, 200
 
@@ -104,11 +129,21 @@ def insert_practice_set(connection, user_id, request_payload):
     cursor = connection.cursor()
     if "set_name" not in request_payload or "questions_list" not in request_payload:
         return "set_name and questions_list are required fields", 400
+    
+    
 
     set_name = request_payload["set_name"]  # required
     questions_list = request_payload["questions_list"] # required
-    private = request_payload.get("private", 0)  # Defaults to 0 if not provided
+    private = request_payload.get("private", 1)  # Defaults to 0 if not provided
     tags_list = request_payload.get("tags", []) # Check if 'tags' is provided, default to an empty list if not
+
+    if len(set_name) == 0: # if set name is empty
+        return "set_name and questions_list are required fields", 400
+    
+    for item in questions_list: # if questions have empty values
+        if len(item['question']) == 0 or len(item['answer']) == 0:
+            return "set_name and questions_list are required fields", 400
+            
 
     query_add_set = """ 
         INSERT INTO practice_set(user_id, set_name, private)

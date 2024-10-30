@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: app
+-- Host: localhost    Database: app
 -- ------------------------------------------------------
 -- Server version	8.0.39
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -237,8 +237,9 @@ CREATE TABLE `practice_set` (
   `is_deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_practice_set_user_id_idx` (`user_id`),
-  CONSTRAINT `fk_practice_set_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_practice_set_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `set_name` CHECK ((`set_name` <> _utf8mb4''))
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +248,7 @@ CREATE TABLE `practice_set` (
 
 LOCK TABLES `practice_set` WRITE;
 /*!40000 ALTER TABLE `practice_set` DISABLE KEYS */;
-INSERT INTO `practice_set` VALUES (1,1,'pandas questions',NULL,NULL,0,0),(2,1,'systemd',NULL,'2024-10-23 17:24:17.000',1,0),(3,1,'math','2024-10-20 18:53:10.659','2024-10-20 18:53:10.659',0,0),(13,1,'new name','2024-10-20 19:27:05.375','2024-10-20 19:27:05.375',1,0),(21,2,'geo','2024-10-20 23:14:38.677','2024-10-22 14:28:28.000',1,0),(35,3,'ab','2024-10-21 12:57:48.015','2024-10-22 14:40:05.000',1,0),(36,1,'coolest set eveeeeeer','2024-10-21 12:57:51.422','2024-10-22 13:15:05.000',1,1),(39,1,'pawel','2024-10-21 13:01:25.562','2024-10-22 13:15:43.000',0,1),(40,1,'coolest set eveeeeeer','2024-10-21 13:04:38.525','2024-10-22 12:26:53.000',1,0),(41,1,'maths','2024-10-21 13:07:14.103','2024-10-22 14:39:56.000',1,0),(42,1,'maths','2024-10-21 13:07:36.050','2024-10-21 13:07:36.050',0,0),(43,1,'maths','2024-10-21 13:09:39.143','2024-10-21 13:09:39.143',0,0),(44,1,'maths','2024-10-21 13:17:01.222','2024-10-21 13:17:01.222',0,0),(45,1,'maths','2024-10-21 13:18:08.410','2024-10-22 12:27:53.000',0,0),(46,1,'maths','2024-10-21 13:43:37.505','2024-10-21 13:43:37.505',0,0),(47,1,'maths','2024-10-21 13:59:34.888','2024-10-21 13:59:34.888',0,0),(48,1,'maths','2024-10-21 13:59:40.969','2024-10-21 13:59:40.969',0,0),(49,1,'maths','2024-10-21 13:59:48.008','2024-10-21 13:59:48.008',0,0),(50,1,'sobb','2024-10-21 13:59:55.479','2024-10-21 13:59:55.479',1,0),(51,1,'hello world','2024-10-21 14:55:26.097','2024-10-22 10:15:36.000',0,1);
+INSERT INTO `practice_set` VALUES (1,1,'pandas questions',NULL,NULL,0,0),(2,1,'systemd',NULL,'2024-10-23 17:24:17.000',1,0),(3,1,'math','2024-10-20 18:53:10.659','2024-10-20 18:53:10.659',0,0),(13,1,'new name','2024-10-20 19:27:05.375','2024-10-20 19:27:05.375',1,0),(21,2,'geo','2024-10-20 23:14:38.677','2024-10-22 14:28:28.000',1,0),(35,3,'ab','2024-10-21 12:57:48.015','2024-10-22 14:40:05.000',1,0),(36,1,'coolest set eveeeeeer','2024-10-21 12:57:51.422','2024-10-22 13:15:05.000',1,1),(39,1,'pawel','2024-10-21 13:01:25.562','2024-10-22 13:15:43.000',0,1),(40,1,'coolest set eveeeeeer','2024-10-21 13:04:38.525','2024-10-22 12:26:53.000',1,0),(41,1,'maths','2024-10-21 13:07:14.103','2024-10-22 14:39:56.000',1,0),(42,1,'maths','2024-10-21 13:07:36.050','2024-10-21 13:07:36.050',0,0),(43,1,'maths','2024-10-21 13:09:39.143','2024-10-21 13:09:39.143',0,0),(44,1,'maths','2024-10-21 13:17:01.222','2024-10-21 13:17:01.222',0,0),(45,1,'maths','2024-10-21 13:18:08.410','2024-10-22 12:27:53.000',0,0),(46,1,'maths','2024-10-21 13:43:37.505','2024-10-21 13:43:37.505',0,0),(47,1,'maths','2024-10-21 13:59:34.888','2024-10-21 13:59:34.888',0,0),(48,1,'maths','2024-10-21 13:59:40.969','2024-10-21 13:59:40.969',0,0),(49,1,'maths','2024-10-21 13:59:48.008','2024-10-21 13:59:48.008',0,0),(50,1,'sobb','2024-10-21 13:59:55.479','2024-10-21 13:59:55.479',1,0),(51,1,'hello world','2024-10-21 14:55:26.097','2024-10-22 10:15:36.000',0,1),(52,1,'neww','2024-10-27 17:10:21.801','2024-10-27 17:10:21.000',0,0),(65,1,'gfdgfdgfd','2024-10-27 18:19:13.228','2024-10-27 18:19:13.000',0,0),(66,1,'gfdgfdgfd','2024-10-27 18:19:13.549','2024-10-27 18:19:13.000',0,0),(67,1,'aaaa','2024-10-27 18:20:27.254','2024-10-27 18:20:27.000',0,0),(68,1,'aaaa','2024-10-27 18:20:27.600','2024-10-27 18:20:27.000',0,0),(69,1,'aaaaaaaaaaaaa','2024-10-27 18:21:38.041','2024-10-29 18:23:26.000',0,1),(70,1,'dsadsa','2024-10-27 18:24:10.721','2024-10-27 23:16:45.000',0,1),(71,1,'fsdfds','2024-10-27 18:25:30.549','2024-10-27 23:16:43.000',0,1),(72,1,'hello123','2024-10-27 18:32:19.524','2024-10-27 23:16:37.000',0,1),(73,1,'helloooo','2024-10-27 18:32:48.383','2024-10-27 23:16:34.000',0,1),(74,1,'fkjsdhgfkjdsgjk','2024-10-27 18:33:20.678','2024-10-27 23:16:39.000',0,1),(75,1,'dsahdlkjsadjkas','2024-10-27 19:09:59.510','2024-10-27 23:16:41.000',0,1),(76,1,'fdsfds','2024-10-27 19:10:12.294','2024-10-27 23:16:30.000',0,1),(79,1,'asdfadsf','2024-10-27 19:14:03.245','2024-10-27 23:16:32.000',0,1),(81,1,'gsgfsd','2024-10-27 19:14:34.811','2024-10-27 23:16:24.000',0,1),(82,1,'hgfhgf','2024-10-27 19:15:05.471','2024-10-27 23:16:26.000',0,1),(86,1,'gfdgfdgfd','2024-10-27 19:21:57.465','2024-10-27 23:16:28.000',0,1),(87,1,'hgfdhdfghgfd','2024-10-27 19:23:04.723','2024-10-27 23:16:47.000',0,1),(88,1,'hhhhhhh','2024-10-27 19:23:28.216','2024-10-27 23:14:02.000',0,1),(89,1,'gdfgdfgfd','2024-10-27 19:28:07.965','2024-10-27 20:08:08.000',0,0),(90,1,'hgfhfg','2024-10-27 19:30:12.983','2024-10-27 23:13:56.000',0,1),(91,1,'fsdfsdfsd','2024-10-27 19:33:00.337','2024-10-27 23:13:54.000',0,1),(92,1,'fsdfsd','2024-10-27 19:49:29.512','2024-10-27 23:07:20.000',0,1),(93,1,'fdsfdsfsdfsd','2024-10-27 19:49:42.493','2024-10-27 23:07:38.000',0,1),(94,1,'fdsfsdfsdfsd','2024-10-27 20:08:55.638','2024-10-27 23:13:50.000',0,1),(95,1,'abecede','2024-10-27 20:11:53.045','2024-10-27 23:13:44.000',0,1),(96,1,'fsdfsdf','2024-10-27 20:15:36.410','2024-10-27 23:13:48.000',1,1),(97,1,'aaaaaaaaa','2024-10-27 20:16:13.418','2024-10-27 23:11:55.000',1,1),(98,1,'fggfgfgf','2024-10-27 20:16:34.172','2024-10-27 23:08:04.000',1,1),(99,1,'ssssss','2024-10-27 20:18:57.809','2024-10-27 23:11:01.000',1,1),(100,1,'public set','2024-10-27 20:22:12.265','2024-10-27 20:22:12.000',0,0),(101,1,'Coolest questions ever','2024-10-27 23:16:03.817','2024-10-27 23:16:03.000',0,0);
 /*!40000 ALTER TABLE `practice_set` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -304,8 +305,10 @@ CREATE TABLE `practice_set_item` (
   `is_deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_practice_set_item_set_id_idx` (`practice_set_id`),
-  CONSTRAINT `fk_practice_set_item_set_id` FOREIGN KEY (`practice_set_id`) REFERENCES `practice_set` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_practice_set_item_set_id` FOREIGN KEY (`practice_set_id`) REFERENCES `practice_set` (`id`),
+  CONSTRAINT `answer` CHECK ((`answer` <> _utf8mb4'')),
+  CONSTRAINT `question` CHECK ((`question` <> _utf8mb3''))
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +317,7 @@ CREATE TABLE `practice_set_item` (
 
 LOCK TABLES `practice_set_item` WRITE;
 /*!40000 ALTER TABLE `practice_set_item` DISABLE KEYS */;
-INSERT INTO `practice_set_item` VALUES (1,1,'How do you display basic information about a dataframe?','df.info()',NULL,0),(2,1,'How do you display the mean average for column Sales?','df[\"Sales\"].mean()',NULL,0),(3,1,'Set max columns displayed to 10','pd.display.max.columns = 10',NULL,0),(4,1,'Set max rows displayed to 15','pd.display.max.rows = 15',NULL,0),(5,2,'Start nginx?','systemctl start nginx',NULL,0),(6,2,'List all units?','systemctl list-all-units',NULL,0),(7,2,'Display logs for nginx?','journalctl -xue nginx',NULL,0),(8,2,'Reload daemons?','systemctl reload-daemons',NULL,0),(9,3,'2+2?','4',NULL,0),(10,3,'10+2?','12',NULL,0),(11,40,'sobczyk tu byl221222?','nie bylo',NULL,0),(12,40,'sobczyk tu byl tez?','no a jak 22122',NULL,0),(13,40,'sobczyk tu byl221222?fff','nie byloaaaaa',NULL,0),(15,41,'2+2?','4',NULL,0),(16,41,'10/2?','5',NULL,0),(17,41,'15*3?','45',NULL,0),(18,41,'10+2?','12',NULL,0),(19,42,'2+2?','4',NULL,0),(20,42,'10/2?','5',NULL,0),(21,42,'15*3?','45',NULL,0),(22,42,'10+2?','12',NULL,0),(23,43,'2+2?','4',NULL,0),(24,43,'10/2?','5',NULL,0),(25,43,'15*3?','45',NULL,0),(26,43,'10+2?','12',NULL,0),(27,44,'2+2?','4',NULL,0),(28,44,'10/2?','5',NULL,0),(29,44,'15*3?','45',NULL,0),(30,44,'10+2?','12',NULL,0),(31,45,'2+2?','4',NULL,1),(32,45,'10/2?','5',NULL,1),(33,45,'15*3?','45',NULL,0),(34,45,'10+2?','12',NULL,0),(35,46,'2+2?','4',NULL,0),(36,46,'10/2?','5',NULL,0),(37,46,'15*3?','45',NULL,0),(38,46,'10+2?','12',NULL,0),(39,47,'2+2?','4',NULL,0),(40,47,'10/2?','5',NULL,0),(41,47,'15*3?','45',NULL,0),(42,47,'10+2?','12',NULL,0),(43,48,'2+2?','4',NULL,0),(44,48,'10/2?','5',NULL,0),(45,48,'15*3?','45',NULL,0),(46,48,'10+2?','12',NULL,0),(47,49,'2+2?','4',NULL,0),(48,49,'10/2?','5',NULL,0),(49,49,'15*3?','45',NULL,0),(50,49,'10+2?','12',NULL,0),(51,50,'2+2?','4',NULL,0),(52,50,'10/2?','5',NULL,0),(53,50,'15*3?','45',NULL,0),(54,50,'10+2?','12',NULL,0),(55,51,'2+2?','4',NULL,0),(56,51,'10/2?','5',NULL,0),(57,51,'15*3?','45',NULL,0),(58,51,'10+2?','12',NULL,0),(59,40,'byl tu','no jak nie jak tak',NULL,0),(60,40,'have you ever?','nope',NULL,0),(61,40,'have you ever eaten?','yes',NULL,0),(68,40,'have you ever had a dog?','nope',NULL,0),(69,40,'have you ever eaten a sanwich?','yes',NULL,0),(72,40,'have you ever had a dog?','nope',NULL,0),(73,40,'have you ever eaten a sanwich?','yes',NULL,0),(74,40,'have you ever had a dog?','nope',NULL,0),(75,40,'have you ever eaten a sanwich?','yes',NULL,0),(76,40,'have you ever had a dog?','nope',NULL,0),(77,40,'have you ever eaten a sanwich?','yes',NULL,0),(78,40,'have you ever had a dog?','nope',NULL,0),(79,40,'have you ever eaten a sanwich?','yes',NULL,0),(80,40,'have you ever had a dog?','nope',NULL,0),(81,40,'have you ever eaten a sanwich?','yes',NULL,0),(82,40,'have you ever had a dog?','nope',NULL,0),(83,40,'have you ever eaten a sanwich?','yes',NULL,0),(84,40,'have you ever had a dog?','nope',NULL,0),(85,40,'have you ever eaten a sanwich?','yes',NULL,0),(86,40,'have you ever had a dog?','nope',NULL,0),(87,40,'have you ever eaten a sanwich?','yes',NULL,0),(88,36,'have you ever had a dog?','nope',NULL,0),(89,36,'have you ever eaten a sanwich?','yes',NULL,0),(90,2,'bla bla','ble ble',NULL,0);
+INSERT INTO `practice_set_item` VALUES (1,1,'How do you display basic information about a dataframe?','df.info()',NULL,0),(2,1,'How do you display the mean average for column Sales?','df[\"Sales\"].mean()',NULL,0),(3,1,'Set max columns displayed to 10','pd.display.max.columns = 10',NULL,0),(4,1,'Set max rows displayed to 15','pd.display.max.rows = 15',NULL,0),(5,2,'Start nginx?','systemctl start nginx',NULL,0),(6,2,'List all units?','systemctl list-all-units',NULL,0),(7,2,'Display logs for nginx?','journalctl -xue nginx',NULL,0),(8,2,'Reload daemons?','systemctl reload-daemons',NULL,0),(9,3,'2+2?','4',NULL,0),(10,3,'10+2?','12',NULL,0),(11,40,'sobczyk tu byl221222?','nie bylo',NULL,0),(12,40,'sobczyk tu byl tez?','no a jak 22122',NULL,0),(13,40,'sobczyk tu byl221222?fff','nie byloaaaaa',NULL,0),(15,41,'2+2?','4',NULL,0),(16,41,'10/2?','5',NULL,0),(17,41,'15*3?','45',NULL,0),(18,41,'10+2?','12',NULL,0),(19,42,'2+2?','4',NULL,0),(20,42,'10/2?','5',NULL,0),(21,42,'15*3?','45',NULL,0),(22,42,'10+2?','12',NULL,0),(23,43,'2+2?','4',NULL,0),(24,43,'10/2?','5',NULL,0),(25,43,'15*3?','45',NULL,0),(26,43,'10+2?','12',NULL,0),(27,44,'2+2?','4',NULL,0),(28,44,'10/2?','5',NULL,0),(29,44,'15*3?','45',NULL,0),(30,44,'10+2?','12',NULL,0),(31,45,'2+2?','4',NULL,1),(32,45,'10/2?','5',NULL,1),(33,45,'15*3?','45',NULL,0),(34,45,'10+2?','12',NULL,0),(35,46,'2+2?','4',NULL,0),(36,46,'10/2?','5',NULL,0),(37,46,'15*3?','45',NULL,0),(38,46,'10+2?','12',NULL,0),(39,47,'2+2?','4',NULL,0),(40,47,'10/2?','5',NULL,0),(41,47,'15*3?','45',NULL,0),(42,47,'10+2?','12',NULL,0),(43,48,'2+2?','4',NULL,0),(44,48,'10/2?','5',NULL,0),(45,48,'15*3?','45',NULL,0),(46,48,'10+2?','12',NULL,0),(47,49,'2+2?','4',NULL,0),(48,49,'10/2?','5',NULL,0),(49,49,'15*3?','45',NULL,0),(50,49,'10+2?','12',NULL,0),(51,50,'2+2?','4',NULL,0),(52,50,'10/2?','5',NULL,0),(53,50,'15*3?','45',NULL,0),(54,50,'10+2?','12',NULL,0),(55,51,'2+2?','4',NULL,0),(56,51,'10/2?','5',NULL,0),(57,51,'15*3?','45',NULL,0),(58,51,'10+2?','12',NULL,0),(59,40,'byl tu','no jak nie jak tak',NULL,0),(60,40,'have you ever?','nope',NULL,0),(61,40,'have you ever eaten?','yes',NULL,0),(68,40,'have you ever had a dog?','nope',NULL,0),(69,40,'have you ever eaten a sanwich?','yes',NULL,0),(72,40,'have you ever had a dog?','nope',NULL,0),(73,40,'have you ever eaten a sanwich?','yes',NULL,0),(74,40,'have you ever had a dog?','nope',NULL,0),(75,40,'have you ever eaten a sanwich?','yes',NULL,0),(76,40,'have you ever had a dog?','nope',NULL,0),(77,40,'have you ever eaten a sanwich?','yes',NULL,0),(78,40,'have you ever had a dog?','nope',NULL,0),(79,40,'have you ever eaten a sanwich?','yes',NULL,0),(80,40,'have you ever had a dog?','nope',NULL,0),(81,40,'have you ever eaten a sanwich?','yes',NULL,0),(82,40,'have you ever had a dog?','nope',NULL,0),(83,40,'have you ever eaten a sanwich?','yes',NULL,0),(84,40,'have you ever had a dog?','nope',NULL,0),(85,40,'have you ever eaten a sanwich?','yes',NULL,0),(86,40,'have you ever had a dog?','nope',NULL,0),(87,40,'have you ever eaten a sanwich?','yes',NULL,0),(88,36,'have you ever had a dog?','nope',NULL,0),(89,36,'have you ever eaten a sanwich?','yes',NULL,0),(90,2,'bla bla','ble ble',NULL,0),(91,52,'2+2?','4',NULL,0),(92,52,'10/2?','5',NULL,0),(93,52,'15*3?','45',NULL,0),(94,52,'10+2?','12',NULL,0),(95,65,'gfdgfd','gfdgfdgfd',NULL,0),(96,65,'gfdg','fdgfdgfd',NULL,0),(97,66,'gfdgfd','gfdgfdgfd',NULL,0),(98,67,'aaaaaaa','aa',NULL,0),(99,67,'aaa','aaa',NULL,0),(100,68,'aaaaaaa','aa',NULL,0),(101,69,'fsdfsd','fdsfsdfsd',NULL,0),(102,70,'fdgfdsfsd','fsdfsdf',NULL,0),(103,70,'sfdsf','sfsdfsd',NULL,0),(104,71,'fsdfds','fsdfsdfsd',NULL,0),(105,72,'sdlkfhjsldkjfhsdjklhf','jkfhsdgjkflgsdjkl',NULL,0),(106,72,'fjksdgfjhsdkg','fsdhjgkgfsdjk',NULL,0),(107,73,'fhjsgdfhjksdgfhjk','fghjkdsgvfkhjsdgjhk',NULL,0),(108,73,'fghsdjkgfhjsdkg','jkfgsdhjkvcf',NULL,0),(109,74,'fhsdjgfhsdjkvgcjhkg','fhjksdvbhcjh',NULL,0),(110,74,'jfjhsdkxvckjh','fjkhsdvbchjkxszvc',NULL,0),(111,74,'jklcxzhjkcvkj','hjkvcsxzkhj\r\n',NULL,0),(112,75,'fhdksjlfgsdhjfkg','kjhgdfsahfjkgdsa',NULL,0),(113,75,'jhcfkdsgfchjksdg','jkchsxgjkchv',NULL,0),(114,75,'jkchxvszckhjasv','jhkcsxjhkcvasjkh',NULL,0),(115,75,'hcjvxszhjkcvjk','chjxsvbcjhk',NULL,0),(116,76,'fsdfsdf','sdfds',NULL,0),(117,76,'fsdf','dsfds',NULL,0),(120,79,'fafadsf','asdfadsfdas',NULL,0),(123,81,'gfsdg','fsdgfdsgfsd',NULL,0),(134,92,'fdsfsdf','sdfsdfsd',NULL,0),(135,92,'fsdfsdfsd','fdsfsd',NULL,0),(136,93,'fsdfsdf','sdfsdfsdfds',NULL,0),(137,94,'fsdfsd','fsdfsdfsd',NULL,0),(138,95,'aaaa','aaaa',NULL,0),(139,96,'fdsfsd','fsdfsdfds',NULL,0),(140,97,'aaaaaaa','bbbbbbb',NULL,0),(141,98,'hffff','fffff',NULL,0),(142,99,'fdsfds','fdsfdsfsd',NULL,0),(143,100,'elo','elo',NULL,0),(144,101,'How do you handle critical incidents?','By chillin',NULL,0),(145,101,'How would you describe your attitude?','Very well',NULL,0),(146,101,'What\'s the capital of France?','Paris',NULL,0);
 /*!40000 ALTER TABLE `practice_set_item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -534,6 +537,7 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `v_set_questions_all_info` AS SELECT 
  1 AS `id`,
+ 1 AS `item_id`,
  1 AS `question`,
  1 AS `answer`,
  1 AS `user_id`,
@@ -542,7 +546,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `created_timestamp`,
  1 AS `last_edited_timestamp`,
  1 AS `private`,
- 1 AS `is_deleted`*/;
+ 1 AS `is_deleted`,
+ 1 AS `set_is_deleted`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -560,14 +565,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `set_name`,
  1 AS `is_deleted`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Dumping events for database 'app'
---
-
---
--- Dumping routines for database 'app'
---
 
 --
 -- Final view structure for view `v_practice_session_total_score`
@@ -600,7 +597,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_set_questions_all_info` AS select `s`.`id` AS `id`,`i`.`question` AS `question`,`i`.`answer` AS `answer`,`s`.`user_id` AS `user_id`,`u`.`username` AS `username`,`s`.`set_name` AS `set_name`,`s`.`created_timestamp` AS `created_timestamp`,`s`.`last_edited_timestamp` AS `last_edited_timestamp`,`s`.`private` AS `private`,`i`.`is_deleted` AS `is_deleted` from ((`practice_set_item` `i` join `practice_set` `s` on((`s`.`id` = `i`.`practice_set_id`))) join `users` `u` on((`u`.`id` = `s`.`user_id`))) */;
+/*!50001 VIEW `v_set_questions_all_info` AS select `s`.`id` AS `id`,`i`.`id` AS `item_id`,`i`.`question` AS `question`,`i`.`answer` AS `answer`,`s`.`user_id` AS `user_id`,`u`.`username` AS `username`,`s`.`set_name` AS `set_name`,`s`.`created_timestamp` AS `created_timestamp`,`s`.`last_edited_timestamp` AS `last_edited_timestamp`,`s`.`private` AS `private`,`i`.`is_deleted` AS `is_deleted`,`s`.`is_deleted` AS `set_is_deleted` from ((`practice_set_item` `i` join `practice_set` `s` on((`s`.`id` = `i`.`practice_set_id`))) join `users` `u` on((`u`.`id` = `s`.`user_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -632,4 +629,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-23 17:30:17
+-- Dump completed on 2024-10-29 22:43:44

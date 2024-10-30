@@ -6,14 +6,14 @@
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     color: white;
     /*display: flex;
     justify-content: center;
     align-items: center; */
     /*background-color: #000; *//* Fallback background */
-    overflow: hidden; /* Prevent scrollbars */
+    /* overflow: hidden; /* Prevent scrollbars */
 }
 
 a {
@@ -22,7 +22,7 @@ a {
 }
 
 a:hover{
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 input[type="submit"], button{
@@ -57,13 +57,77 @@ outline: none;
 color: white;
 }
 
-
 .container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.scrollable-container {
+  height: auto;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  /*max-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin-top: 50px;
+  min-width: 400px;
+  min-height: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.display-tables {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.practice-sets-table {
+  background-color: rgba(24,70,116, 0.5);
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
+}
+
+.table-practice-set-items {
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
+}
+
+.options-bar {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-start;
+  width: 75vw;
+}
+
+.index-cell {
+  white-space: nowrap;
+  width: 50px;
+}
+
+.options-cell {
+  white-space: nowrap;
+  width: 150px;
+  align-items: center;
+}
+
+.options-cell button {
+  margin: 0 5px;
+}
+
 
 .gradient-background {
     position: fixed;
@@ -80,17 +144,74 @@ color: white;
 
 nav {
   background-color: rgba(24,70,116, 0.5);
-  overflow: hidden;
+  /*overflow: hidden; */
+  width: 100%;
+  position: fixed;
   display: flex; /* Use flexbox for layout */
   justify-content: space-between; /* Space between the two lists */
   align-items: center; /* Vertically center items */
   padding: 10px 20px; /* Padding for spacing */
+  white-space: nowrap; /* Prevent line breaks */
+  flex-wrap: nowrap; /* Prevent wrapping */
 }
+
+/* Container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Adjusted width */
+  height: 24px; /* Adjusted height */
+}
+
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider background */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: background-color 0.4s, transform 0.4s;
+  border-radius: 24px; /* Adjusted border-radius */
+}
+
+/* Slider circle */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Adjusted size */
+  width: 20px; /* Adjusted size */
+  left: 2px; /* Adjusted position */
+  bottom: 2px; /* Adjusted position */
+  background-color: white;
+  transition: transform 0.4s;
+  border-radius: 50%;
+}
+
+/* Change background when toggled */
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+/* Move the circle when toggled */
+input:checked + .slider::before {
+  transform: translateX(26px); /* Adjusted translation */
+}
+
+
 
 .navbar-items {
   display: flex;
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -102,16 +223,18 @@ nav {
   list-style: none; /* Remove default list styling */
   padding: 0; /* Remove default padding */
   margin: 0; /* Remove default margin */
+  margin-left: auto;
+  display: flex;
 }
 
 .navbar-right li {
-  margin-left: 20px; /* Optional: spacing on the left */
+  margin-left: 0; /* Optional: spacing on the left */
 }
 /* Navbar links */
 nav a {
   color: white;
   text-align: center;
-  padding: 14px 20px;
+  padding: 11px 20px;
   text-decoration: none;
   font-weight: bold;
 }
@@ -121,14 +244,90 @@ nav a:hover {
   background-color: rgba(16, 47, 79, 0.5);
 }
 
+.logo {
+  margin-right: auto; /* Allows centering of menu items */
+  font-family: Anton;
+}
+/* Hamburger menu styles */
+.menu-toggle {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.mobile-nav-item {
+  display: none;
+}
+
+/* Hamburger bars */
+.bar {
+  height: 3px;
+  width: 25px;
+  background-color: white;
+  margin: 4px 0;
+}
 
 /* Add responsive design */
-@media screen and (max-width: 600px) {
-  nav a {
-      float: none;
-      width: 100%;
-      text-align: left;
+@media screen and (max-width: 768px) {
+  .navbar {
+    background-color: rgb(24,70,116);
   }
+
+  .navbar-items {
+    display: none; /* Hide the menu by default */
+    flex-direction: column; /* Stack items vertically */
+    position: absolute; /* Absolute positioning for dropdown */
+    top: 50px; /* Adjust based on navbar height */
+    padding: 0;
+    margin: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    background-color: rgba(24,70,116, 0.75); /* Background color for dropdown */
+    backdrop-filter: blur(2px);
+    z-index: 1000; /* Ensure it's on top */
+    box-sizing: border-box;
+  }
+
+  .navbar-items li{
+    padding-top: 20px 0;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .navbar-items li a {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    text-decoration: none; /* Remove underline */
+    box-sizing: border-box;
+  }
+
+  .navbar-right li a {
+    padding: 15px 0;
+    color: #333;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-items.active {
+      display: flex; /* Show when active */
+  }
+
+  .menu-toggle {
+      display: flex; /* Show hamburger menu */
+  }
+
+    .navbar-right {
+      display: none; /* Hide logout button in mobile view */
+  }
+
+  .mobile-nav-item { /* Show log in/ log out button*/
+    display: block;
+  }
+
 }
 
 /* Background color animiation */
@@ -142,14 +341,7 @@ nav a:hover {
     }
 }
 
-.main-content {
-  min-width: 400px;
-  min-height: 300px;
-  background-color: rgba(24,70,116, 0.5);
-  border-radius: 16px;
-  text-align: center;
-  padding: 20px;
-}
+
 
 /* flash messages color */
 .danger {
@@ -164,16 +356,45 @@ nav a:hover {
   text-align: center;
 }
 
+.error-messages {
+  margin-top: 1em;
+  text-align: center;
+}
+
 /* Tables */
 
 table, th, td {
   border: 1px solid white;
   border-collapse: collapse;
+  padding: 5px;
 }
 
 tr:nth-child(even) {
-  background-color: #D6EEEE;
+  background-color: rgba(17, 46, 76, 0.5);
 }
+
+/* Practice set page */
+
+.practice-answer {
+  display: none;
+}
+
+.practice-item-toggle {
+  margin: 10px;
+  
+}
+.right-answer-button, .wrong-answer-button {
+  margin: 10px;
+}
+
+.right-answer-button {
+  background-color: #4caf50;
+}
+
+.wrong-answer-button {
+  background-color: rgb(161, 35, 35);
+}
+
 
 /* Log in form */
 /* ============================================*/
@@ -374,6 +595,43 @@ dialog{
     align-items: center;
     width 400px;
 } */
+
+.btn-save-set {
+  display: none;
+  margin-top: 30px;
+}
+
+.btn-back-to-my-sets {
+  display: none;
+  margin-bottom: 30px;
+}
+
+.response-message {
+  display: none;
+  color: rgb(40, 224, 40);
+}
+
+textarea {
+  width: 100%; /* Full width */
+  height: auto; /* Allow height to expand */
+  padding: 10px; /* Add padding */
+  box-sizing: border-box; /* Include padding in width */
+  resize: vertical; /* Allow vertical resizing only */
+  font-family: inherit; /* Use the same font as the rest of the page */
+  resize: none;
+  min-height: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #ccc;
+}
+
+textarea:focus {
+  outline: none;
+  color: white;
+}
+
 
 .modal {
     top: 50%;

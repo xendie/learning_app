@@ -1,49 +1,83 @@
 {% extends "base.html" %}
 {% block title %}Register{% endblock %}
 {% block content %}
-<div class="register-container">
-    <h1 id="register-title" >Register</h1>
-    <form class="registration-form" method="POST" action="{{ url_for('register') }}" onsubmit="return validateForm()">
-        {{ form.hidden_tag() }}
-        <div class="form-group input-group">
-            <label for="username">Username</label>
-            {{ form.username() }}
+<script>
+    function validateForm() {
+        // reset error messages
+        document.getElementById('password-error').innerText = ''
+        document.getElementById('email-error').innerText = ''
+
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const email = document.getElementById('email').value
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        let response = true
+        if (password !== confirmPassword) {
+            document.getElementById('password-error').innerText = 'Passwords must match!';
+            response = false;  // Prevent form submission
+        }
+        // validate e-mail
+        if (!emailPattern.test(email)){
+            document.getElementById('email-error').innerText = 'Enter a proper e-mail address!';
+            response = false;
+        }
+        if (response === true){
+            return true;    
+        } else {
+            return false;
+        // Allow form submission
+        }
+    }
+</script>
+
+<div class="container">
+    <div class="register-container">
+        <h1 id="register-title">Register</h1>
+        <form class="registration-form" method="POST" action="{{ url_for('register') }}" onsubmit="return validateForm()">
+            {{ form.hidden_tag() }}
+            <div class="form-group input-group">
+                <label for="username">Username</label>
+                {{ form.username() }}
+            </div>
+            <div class="form-group input-group">
+                <label for="password">Password</label>
+                {{ form.password() }}
+            </div>
+            <div class="form-group input-group">
+                <label for="confirm_password">Confirm Password</label>
+                {{ form.confirm_password() }}
+            </div>
+            
+            <div class="form-group input-group">
+                <label for="email">E-mail</label>
+                {{ form.email() }}
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+        <p id ="already-have-account">Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
+        <div class"error-messages">
+            <p class="danger" id="password-error"></div>
+            <p class="danger" id="email-error"></div>
         </div>
-        <div class="form-group input-group">
-            <label for="password">Password</label>
-            {{ form.password() }}
+        <div class="flash-messages">
+            {% for error in form.username.errors %}
+                <p class="danger">{{ error }}</p>
+            {% endfor %}
+            {% for error in form.password.errors %}
+                <p class="danger">{{ error }}</p>
+            {% endfor %}
+            {% for error in form.confirm_password.errors %}
+                <p class="danger">{{ error }}</p>
+            {% endfor %}
+            {% for error in form.email.errors %}
+                <p class="danger">{{ error }}</p>
+            {% endfor %}
         </div>
-        <div class="form-group input-group">
-            <label for="confirm_password">Confirm Password</label>
-            {{ form.confirm_password() }}
-        </div>
-        
-        <div class="form-group input-group">
-            <label for="email">E-mail</label>
-            {{ form.email() }}
-        </div>
-        <div class="form-group">
-            <div id="password-error"></div>
-            <div id="email-error"></div>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Register">
-        </div>
-    </form>
-    <p id ="already-have-account">Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
-    <div class="flash-messages">
-        {% for error in form.username.errors %}
-            <p class="danger">{{ error }}</p>
-        {% endfor %}
-        {% for error in form.password.errors %}
-            <p class="danger">{{ error }}</p>
-        {% endfor %}
-        {% for error in form.confirm_password.errors %}
-            <p class="danger">{{ error }}</p>
-        {% endfor %}
-        {% for error in form.email.errors %}
-            <p class="danger">{{ error }}</p>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

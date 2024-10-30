@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Log In{% endblock %}
 {% block content %}
-<div class="login-container">
-    <form class="login-form" method="POST" action="{{ url_for('login') }}">
-        <h2>Login</h2>
-        {{ form.hidden_tag() }}
-        <div class="input-group">
-        <label for="username">Username</label>
-        {{ form.username() }}
-        {% for error in form.username.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        </div>
-        <div class="input-group">
-        <label for="password">Password</label>
-        {{ form.password() }}
-        {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        </div>
-        <button type="submit">Login</button>
-        <br>
-        <p class="signup-link">Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
-    </form>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        <div class="flash-messages">
-        {% if messages %}
-                {% for category, message in messages %}
-                    <p class="{{ category }}">{{ message }}</p>
-                {% endfor %}
-        {% endif %}
-        </div>
-    {% endwith %}
+<div class="container">
+    <div class="login-container">
+        <form class="login-form" method="POST" action="{{ url_for('login') }}">
+            <h2>Login</h2>
+            {{ form.hidden_tag() }}
+            <div class="input-group">
+            <label for="username">Username</label>
+            {{ form.username() }}
+            {% for error in form.username.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            </div>
+            <div class="input-group">
+            <label for="password">Password</label>
+            {{ form.password() }}
+            {% for error in form.password.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            </div>
+            <button type="submit">Login</button>
+            <br>
+            <p class="signup-link">Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+        </form>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            <div class="flash-messages">
+            {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="{{ category }}">{{ message }}</p>
+                    {% endfor %}
+            {% endif %}
+            </div>
+        {% endwith %}
+    </div>
 </div>
 {% endblock %}

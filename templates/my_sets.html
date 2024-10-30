@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% block title %}My sets{% endblock %}
+{% block content %}
+    <div class="main-content">
+        <div class="display-tables">
+            <h1>My sets</h1>
+            <p class="response-message"></p>
+            <div class="options-bar">
+                <div class="options-bar-buttons">
+                    <a href="/new_set">
+                        <button class="btn-new-set">New set</button>
+                    </a>
+                    <button class="btn-save-set">Save</button>
+                    <button onclick="backToPracticeSets()" class="btn-back-to-my-sets">Back to my sets</button>
+                </div>
+            </div>
+            <table class="practice-sets-table">
+                <thead>
+                    <th>No.</th>
+                    <th>Set name</th>
+                    <th>Options</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <dialog delete-dialog>
+            <p>Are you sure you want to delete this practice set?</p>
+            <br>
+            <button class="confirm-delete-dialog">Yes</button>
+            <button class="close-delete-dialog">No</button>
+        </dialog>
+    </div>
+    <script>
+        const dialog = document.querySelector('[delete-dialog]');
+        const btnCloseDialog = document.querySelector('.close-delete-dialog');
+        const btnConfirmDelete = document.querySelector('.confirm-delete-dialog')
+
+        function setEdit(){
+            alert('Edit');
+        };
+
+        function setDelete(element){
+            //dialog.show();
+            if (confirmAction()){
+                let confirmDelete = false;
+
+                let dataId = $(element).closest('tr').attr('data-id');
+                let data = {set_id : dataId};
+            //    console.log(data);
+
+                $.ajax({
+                    url: 'http://localhost:5000/delete_set',
+                    method: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    xhrFields: {
+                        withCredentials: true,
+                    },
+                    success: function(response){
+                    //    console.log(response);
+                        getPracticeSets(); // refresh the sets to reflect that the set was deleted
+                    },
+                    error: function(error){
+                        console.error('Error:', error);
+                    }
+                });
+                
+            }
+        };
+        /*
+        btnCloseDialog.addEventListener('click', () =>{
+            dialog.close();
+        });
+
+        btnConfirmDelete.addEventListener('click', () =>{
+            alert('delete');
+            dialog.close();
+
+            // get set id
+            // ajax request
+            // refresh the page
+        });
+        */
+
+        function confirmAction() {
+            return confirm("Are you sure you want to proceed?"); 
+        }
+
+
+
+        function setView(element){
+           // alert('view');
+            let dataId = $(element).closest('tr').attr('data-id');
+        //    console.log(dataId);
+
+            let data = {practice_set_id : dataId}
+
+            $.ajax({
+                url: 'http://localhost:5000/get_full_practice_set',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                xhrFields: {
+                    withCredentials: true,
+                },
+                success: function(response){
+                //    console.log('Data:', response);
+                    $(".practice-sets-table").hide();
+                    
+
+                    if(response.message) {
+                        let table = '';
+                        let setName = response.message[0]['set_name']; 
+                    //    console.log(setName);
+
+                        $.each(response.message, function(index, practiceItem) {
+                        //    console.log(practiceItem.question);
+                            table += '<tr data-id="' + index  + '" userId="' + practiceItem.user_id +'">' +
+                                    '<td class="index-cell">' + (index + 1) + '</td>' +
+                                    '<td>' + practiceItem.question + '</td>' +
+                                    '<td>' + practiceItem.answer + '</td>'
+                                    '<td class="options-cell">' +
+                                        '<button onclick="setDelete()" class="btn-edit">Delete</button>' +
+                                    '</td>' +
+                                '</tr>';
+                        });
+                        //$(".practice-sets-table").find('tbody').empty().html(table);
+                        let newTable = $('<table class="table-practice-set-items"><tbody></tbody></table>'); // Create a new div element for the new table
+                        $('.display-tables').append(newTable); // 
+                        $('.table-practice-set-items').find('tbody').html(table); // populate the table with practice questions and answers
+                        $('.display-tables').find('h1').text(setName); // Display practice set name
+                        $('.btn-new-set').closest('a').hide(); // Hide New set button
+                        $('.btn-save-set').show(); // Show Save button
+                        $('.btn-back-to-my-sets').show(); // Show back to my sets button
+                    }
+
+                },
+                error: function(error){
+                    console.error('Error:', error);
+                }
+            })
+
+            // request specific set info
+
+            // create a new table and display it
+            // on row click allow editing
+            // Save changes button (greyed out if no changes made)
+        };
+
+        
+        /*
+        function setPractice(element){
+            let dataId = $(element).closest('tr').attr('data-id');
+            let data = {set_id : dataId};
+            console.log(data);
+        }; */
+
+
+        function backToPracticeSets(){
+
+            getPracticeSets();
+            $('.btn-new-set').closest('a').show();
+            $('.btn-save-set').hide();
+            $('.btn-back-to-my-sets').hide();
+            $(".practice-sets-table").show();
+            $('.table-practice-set-items').remove();
+        }
+
+
+        function getPracticeSets(){
+            $.ajax({
+                url: 'http://localhost:5000/get_practice_sets',
+                method: 'GET',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response){
+                    //console.log('Session data:', response);
+
+                    if (response.message) {
+                        let table = '';
+                        $.each(response.message, function(index, practiceSet) {
+                            //console.log(practiceSet.set_name);
+                            table += '<tr data-id="' + practiceSet.set_id + '" data-name="' + practiceSet.set_name + '" userId="' + practiceSet.username+'">' +
+                                    '<td class="index-cell">' + (index + 1) + '</td>' +
+                                    '<td>' + practiceSet.set_name + '</td>' +
+                                    '<td class="options-cell">' +
+                                        '<button onclick="setView(this)" class="btn-view">View</button>' +
+                                        '<a href="practice/' + practiceSet.set_id + '"><button onclick="setPractice(this)" class="btn-practice">Practice</button></a>' +
+                                        '<button onclick="setDelete(this)" class="btn-edit">Delete</button>' +
+                                    '</td>' +
+                                '</tr>';
+                        });
+                        $(".practice-sets-table").find('tbody').empty().html(table);
+                        $(".practice-sets-table").show();
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function showResponseMessages(){
+            const responseMessage = sessionStorage.getItem("responseMessage");
+            if (responseMessage){
+                $('.response-message').text(responseMessage);
+                $('.response-message').show();
+                sessionStorage.removeItem("responseMessage");
+            }
+        }
+
+        $(document).ready(function(){
+            getPracticeSets();
+            showResponseMessages(); // messages a redirection
+        });
+    </script>
+{% endblock %}
+
+
+
