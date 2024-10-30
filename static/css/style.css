@@ -340,8 +340,20 @@ nav a:hover {
         transform: rotate(360deg);
     }
 }
+.table-practice-results{
+  margin: 10px;
+}
+.wrong-answer-result {
+  background-color: rgb(161, 35, 35);
+}
 
+.right-answer-result {
+  background-color: #4caf50;
+}
 
+.buttons-practice-results button {
+  margin: 10px;
+}
 
 /* flash messages color */
 .danger {
@@ -377,6 +389,10 @@ tr:nth-child(even) {
 
 .practice-answer {
   display: none;
+  background-color: rgba(16, 47, 79, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 
 .practice-item-toggle {

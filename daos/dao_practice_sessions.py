@@ -55,16 +55,18 @@ def insert_practice_session(connection, user_id, request_payload):
 
     set_id = request_payload['set_id']
     answers_list = request_payload['answers_list']
+    time_started = request_payload['time_started']
+    time_ended = request_payload['time_ended']
     
     if check_if_set_is_public(request_payload, cursor) == False:
         if check_if_user_owns_this_set(request_payload, user_id, cursor) == False:
             return "The user does not have permission to view this set or it does not exist.", 401
     
     try:
-        params_query_insert_session = [user_id, set_id]
+        params_query_insert_session = [user_id, set_id, time_started, time_ended]
         query_insert_session = """
-            INSERT INTO practice_session(user_id, practice_set_id)
-            VALUES (%s, %s)  
+            INSERT INTO practice_session(user_id, practice_set_id, time_started, time_ended)
+            VALUES (%s, %s, %s, %s)  
             """
         cursor.execute(query_insert_session, params_query_insert_session)
         last_session_id = cursor.lastrowid
