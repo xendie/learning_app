@@ -57,6 +57,16 @@ outline: none;
 color: white;
 }
 
+table, th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(17, 46, 76, 0.5);
+}
+
 .container {
   height: 100vh;
   display: flex;
@@ -343,11 +353,24 @@ nav a:hover {
 .table-practice-results{
   margin: 10px;
 }
-.wrong-answer-result {
+.wrong-answer-result, tr.wrong-answer-result {
   background-color: rgb(161, 35, 35);
 }
 
-.right-answer-result {
+.center-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  margin: 5px;
+}
+
+button.active-page {
+  background-color: #163d63;
+}
+
+.right-answer-result, tr.right-answer-result {
   background-color: #4caf50;
 }
 
@@ -375,15 +398,6 @@ nav a:hover {
 
 /* Tables */
 
-table, th, td {
-  border: 1px solid white;
-  border-collapse: collapse;
-  padding: 5px;
-}
-
-tr:nth-child(even) {
-  background-color: rgba(17, 46, 76, 0.5);
-}
 
 /* Practice set page */
 
@@ -590,6 +604,13 @@ tr:nth-child(even) {
     transform: translateY(-30vh) translateX(20px); /* Off screen and slightly right */
     opacity: 0; /* Fully faded out */
   }
+}
+
+.full-width-table {
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
 }
 
 .background-text{
