@@ -14,7 +14,7 @@ import math
 from daos.sql_connection import get_sql_connection
 from daos.dao_practice_sets import get_one_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
 from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
-
+from daos.dao_users import username_exists, get_user_profile_info
 # App configuration
 
 app = Flask(__name__)
@@ -198,7 +198,7 @@ def practice(id):
     if r_status_code == 404: # set not found or no permission for the user
         return "You don't have permission to view this or this doesn't exist.", 404
 
-    return render_template('practice.html', username = session['username'], id = id, response = response[0]) # need to pass session username so that nav bar works correctly
+    return render_template('practice.html', username = session['username'] if 'username' in session else None, id = id, response = response[0]) # need to pass session username so that nav bar works correctly
 
 @app.route('/practice_history')
 @login_required
@@ -224,7 +224,18 @@ def practice_history_id(id):
     print(practice_session)
     return render_template('practice_history.html', id = id, username = session['username'], practice_session = practice_session)
 
+@app.route('/user/<string:username>')
+def user_profile(username):
+    print('Current session: ', session)
+    print(f'/user/{username} route accessed')
+    
+    if not username_exists(get_db(), username): # If user with such name does not exist
+        return f'User {username} was not found.', 404
 
+    profile_data = get_user_profile_info(get_db(), username)
+    print(profile_data)
+
+    return render_template('user.html', username = session['username'] if 'username' in session else None, profile_data = profile_data) # if / else to pass None if the user is not logged in to prevent an error
 
 # ===========================================================
 #                           APIs

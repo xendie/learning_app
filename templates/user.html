@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}User profile{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="main-content">
+            <img src="{{ url_for('static', filename='uploads/avatars/' + profile_data['avatar_url']) }}.jpg" width="200px", height="200px">
+            <h2>{{profile_data['username']}}</h2>
+            <p style="font-size: 0.8em">Joined {{profile_data['created_timestamp'].strftime('%d/%m/%Y')}}</p>
+            <br>
+            <h3>Description</h3>
+            <p>{{profile_data['description']}}</p>
+
+        </div>
+    </div>
+{% endblock %}
