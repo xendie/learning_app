@@ -10,7 +10,9 @@
                     <a href="/new_set">
                         <button class="btn-new-set">New set</button>
                     </a>
-                    <button class="btn-save-set">Save</button>
+                    <a href="#">
+                        <button class="btn-edit-set">Edit</button>
+                    </a>
                     <button onclick="backToPracticeSets()" class="btn-back-to-my-sets">Back to my sets</button>
                 </div>
             </div>
@@ -105,6 +107,8 @@
                 success: function(response){
                 //    console.log('Data:', response);
                     $(".practice-sets-table").hide();
+                    $('#pagination-container').hide();
+                    $('.btn-edit-set').closest('a').attr('href', 'edit_set/' + dataId);
                     
                     if(response.message) {
                         let table = '';
@@ -128,7 +132,7 @@
                         $('.table-practice-set-items').find('tbody').html(table); // populate the table with practice questions and answers
                         $('.display-tables').find('h1').text(setName); // Display practice set name
                         $('.btn-new-set').closest('a').hide(); // Hide New set button
-                        $('.btn-save-set').show(); // Show Save button
+                        $('.btn-edit-set').show(); // Show Save button
                         $('.btn-back-to-my-sets').show(); // Show back to my sets button
                     }
 
@@ -156,9 +160,10 @@
 
             getPracticeSets();
             $('.btn-new-set').closest('a').show();
-            $('.btn-save-set').hide();
+            $('.btn-edit-set').hide();
             $('.btn-back-to-my-sets').hide();
             $(".practice-sets-table").show();
+            $('#pagination-container').show();
             $('.table-practice-set-items').remove();
         }
 
@@ -263,6 +268,7 @@
         $(document).ready(function(){
             getPracticeSets();
             showResponseMessages(); // messages a redirection
+
         });
     </script>
 {% endblock %}

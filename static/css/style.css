@@ -649,8 +649,12 @@ dialog{
     width 400px;
 } */
 
-.btn-save-set {
+.btn-edit-set {
   display: none;
+}
+
+.btn-save-set {
+  margin-top: 1em;
 }
 
 .btn-back-to-my-sets {
