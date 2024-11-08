@@ -33,7 +33,7 @@
             </div>
             <ul class="navbar-items">
                 <li><a href="/">Home</a></li>
-                <li><a href="#">Practice</a></li>
+            <!--    <li><a href="#">Practice</a></li> -->
                 {% if username %}
                     <li><a href="/my_sets">My sets</a></li>
                     <li><a href="/practice_history">History</a></li>
@@ -46,6 +46,7 @@
             </ul>
             <ul class="navbar-right">
                 {% if username %}
+                    <li><a href="/user/{{username}}">{{username}}</a></li>
                     <li><a href="/logout">Log Out</a></li>
                 {% else %}
                     <li><a href="/login">Log In</a></li>
