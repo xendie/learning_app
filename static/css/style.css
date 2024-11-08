@@ -129,10 +129,16 @@ tr:nth-child(even) {
 }
 
 .options-bar {
-  margin-top: 15px;
   display: flex;
-  justify-content: flex-start;
-  width: 75vw;
+  justify-content: flex-end;
+  margin-top: 30px;
+  width: 90vw;
+}
+
+.options-bar-buttons{
+  display: flex;
+  gap: 20px;
+  margin-right: 8vw;
 }
 
 .index-cell {
@@ -645,12 +651,10 @@ dialog{
 
 .btn-save-set {
   display: none;
-  margin-top: 30px;
 }
 
 .btn-back-to-my-sets {
   display: none;
-  margin-bottom: 30px;
 }
 
 .response-message {
