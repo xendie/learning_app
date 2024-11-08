@@ -5,19 +5,31 @@
     font-family: "Noto Sans", sans-serif;
 }
 
+:root {
+  --dark-blue-color: #184674;
+  --primary-background-color: #376E87;
+  --input-navbar-color-opaque: rgb(24,70,116);
+  --input-navbar-color-s-opaque: rgba(24,70,116, 0.75);
+  --input-navbar-color: rgba(24,70,116, 0.5);
+  --hover-button: rgba(17, 46, 76, 0.5);
+  --hover-button2: #163d63;
+  --response-message-color: rgb(40, 224, 40);
+  --wrong-answer-color: rgb(161, 35, 35);
+  --right-answer-color: #4caf50;
+  --flask-message-danger: rgb(246, 131, 30);
+  --flash-message-success: rgb(21, 211, 21);
+  --login-color: rgba(55, 110, 135, 0.5);
+  --link-color: #aad4ff;
+}
+
 body {
     min-height: 100vh;
     margin: 0;
     color: white;
-    /*display: flex;
-    justify-content: center;
-    align-items: center; */
-    /*background-color: #000; *//* Fallback background */
-    /* overflow: hidden; /* Prevent scrollbars */
 }
 
 a {
-  color: #aad4ff;
+  color: var(--link-color);
   text-decoration: none;
 }
 
@@ -27,7 +39,7 @@ a:hover{
 
 input[type="submit"], button{
   padding: 10px;
-  background-color: #184674;
+  background-color: var(--dark-blue-color);
   color: white;
   border: none;
   cursor: pointer;
@@ -36,7 +48,7 @@ input[type="submit"], button{
 }
 
 input[type="submit"]:hover, button:hover{
-  background-color: #163d63;
+  background-color: var(--hover-button2);
 }
 
 input {
@@ -44,7 +56,7 @@ input {
   padding: 10px;
   font-size: 16px;
   border: none;
-  background-color: rgba(24,70,116, 0.5);
+  background-color: var(--input-navbar-color);
   color: white;
   border-radius: 5px;
 }
@@ -55,6 +67,16 @@ color: white;
 input:focus{
 outline: none;
 color: white;
+}
+
+table, th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: var(--hover-button);
 }
 
 .container {
@@ -92,7 +114,7 @@ color: white;
 }
 
 .practice-sets-table {
-  background-color: rgba(24,70,116, 0.5);
+  background-color: var(--input-navbar-color);
   margin: 30px;
   min-width: 600px;
   max-width: 90vw;
@@ -128,22 +150,20 @@ color: white;
   margin: 0 5px;
 }
 
-
 .gradient-background {
     position: fixed;
     top: -100%;
     left: -100%;
     width: 300%;
     height: 300%;
-    background: linear-gradient(0deg, #376E87 0%, #184674 100%); 
-    /* background: linear-gradient(0deg, #87376e 0%, #187444 100%); */
+    background: linear-gradient(0deg, var(--primary-background-color) 0%, var(--dark-blue-color) 100%); 
     transform-origin: center;
     animation: rotate-gradient 10s infinite linear;
     z-index: -10;
 }
 
 nav {
-  background-color: rgba(24,70,116, 0.5);
+  background-color: var(--input-navbar-color);
   /*overflow: hidden; */
   width: 100%;
   position: fixed;
@@ -198,7 +218,7 @@ nav {
 
 /* Change background when toggled */
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: var(--right-answer-color);
 }
 
 /* Move the circle when toggled */
@@ -241,7 +261,7 @@ nav a {
 
 /* Change color on hover */
 nav a:hover {
-  background-color: rgba(16, 47, 79, 0.5);
+  background-color: var(--hover-button);
 }
 
 .logo {
@@ -270,7 +290,7 @@ nav a:hover {
 /* Add responsive design */
 @media screen and (max-width: 768px) {
   .navbar {
-    background-color: rgb(24,70,116);
+    background-color: var(--input-navbar-color-opaque);
   }
 
   .navbar-items {
@@ -283,7 +303,7 @@ nav a:hover {
     left: 0;
     right: 0;
     width: 100vw;
-    background-color: rgba(24,70,116, 0.75); /* Background color for dropdown */
+    background-color: var(--input-navbar-color-s-opaque); /* Background color for dropdown */
     backdrop-filter: blur(2px);
     z-index: 1000; /* Ensure it's on top */
     box-sizing: border-box;
@@ -340,15 +360,40 @@ nav a:hover {
         transform: rotate(360deg);
     }
 }
+.table-practice-results{
+  margin: 10px;
+}
+.wrong-answer-result, tr.wrong-answer-result {
+  background-color: var(--wrong-answer-color);
+}
 
+.center-flex {
+  display: flex;
+  justify-content: center;
+}
 
+.pagination button {
+  margin: 5px;
+}
+
+button.active-page {
+  background-color: var(--hover-button2);
+}
+
+.right-answer-result, tr.right-answer-result {
+  background-color: var(--right-answer-color);
+}
+
+.buttons-practice-results button {
+  margin: 10px;
+}
 
 /* flash messages color */
 .danger {
-	color: rgb(246, 131, 30);
+	color: var(--flask-message-danger);
 }
 .success {
-	color: rgb(21, 211, 21);
+	color: var(--flash-message-success);
 }
 
 .flash-messages {
@@ -363,20 +408,15 @@ nav a:hover {
 
 /* Tables */
 
-table, th, td {
-  border: 1px solid white;
-  border-collapse: collapse;
-  padding: 5px;
-}
-
-tr:nth-child(even) {
-  background-color: rgba(17, 46, 76, 0.5);
-}
 
 /* Practice set page */
 
 .practice-answer {
   display: none;
+  background-color: var(--hover-button);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 
 .practice-item-toggle {
@@ -388,11 +428,11 @@ tr:nth-child(even) {
 }
 
 .right-answer-button {
-  background-color: #4caf50;
+  background-color: var(--right-answer-color);
 }
 
 .wrong-answer-button {
-  background-color: rgb(161, 35, 35);
+  background-color: var(--wrong-answer-color);
 }
 
 
@@ -421,7 +461,7 @@ tr:nth-child(even) {
     padding: 10px;
     font-size: 16px;
     border: none;
-    background-color: rgba(24,70,116, 0.5);
+    background-color: var(--input-navbar-color);
     color: white;
 }
 .input-group input:active{
@@ -438,7 +478,7 @@ tr:nth-child(even) {
     width: 100%;
     max-width: 400px;
     padding: 20px;
-  /*  background-color: rgba(55, 110, 135, 0.5); */
+  /*  background-color: var(--login-color); */
     border-radius: 8px;
 }
 
@@ -446,7 +486,7 @@ tr:nth-child(even) {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    background-color: #184674;
+    background-color: var(--dark-blue-color);
     color: white;
     border: none;
     border-radius: 4px;
@@ -454,13 +494,13 @@ tr:nth-child(even) {
 }
 
 .login-container button:hover {
-    background-color: #163d63;
+    background-color: var(--hover-button2);
 }
 
 .login-form {
   padding: 20px;
   border-radius: 15px;
-  background-color: rgba(55, 110, 135, 0.5);
+  background-color: var(--login-color);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -501,7 +541,7 @@ tr:nth-child(even) {
   margin: 0 auto;
   padding: 20px;
   border-radius: 15px;
-  background-color: rgba(55, 110, 135, 0.5);
+  background-color: var(--login-color);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -576,6 +616,13 @@ tr:nth-child(even) {
   }
 }
 
+.full-width-table {
+  margin: 30px;
+  min-width: 600px;
+  max-width: 90vw;
+  width: 90vw;
+}
+
 .background-text{
   position: absolute;
   display: flex;
@@ -608,7 +655,7 @@ dialog{
 
 .response-message {
   display: none;
-  color: rgb(40, 224, 40);
+  color: var(--response-message-color);
 }
 
 textarea {

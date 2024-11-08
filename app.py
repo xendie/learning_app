@@ -8,11 +8,12 @@ from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, 
 #import json
 from functools import wraps
 from datetime import timedelta
+import math
 #import logging
 
 from daos.sql_connection import get_sql_connection
 from daos.dao_practice_sets import get_one_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
-from daos.dao_practice_sessions import insert_practice_session
+from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
 
 # App configuration
 
@@ -80,6 +81,11 @@ def login_required(f):
 
         return f(*args, **kwargs)
     return decorated_function
+
+@app.template_filter('floor')
+def floor_filter(value):
+    """Returns the floor of the value."""
+    return math.floor(value)
 
 #======= END FUNCTIONS =======
 
@@ -193,6 +199,31 @@ def practice(id):
         return "You don't have permission to view this or this doesn't exist.", 404
 
     return render_template('practice.html', username = session['username'], id = id, response = response[0]) # need to pass session username so that nav bar works correctly
+
+@app.route('/practice_history')
+@login_required
+def practice_history():
+    print('Current session: ', session)
+    print('/practice_history route accessed')
+
+    page = request.args.get('page', default=1, type=int)
+
+    all_practice_sessions = get_all_user_practice_sessions(get_db(), session['user_id'], page)
+    print(all_practice_sessions)
+    return render_template('practice_history.html', username = session['username'], all_practice_sessions = all_practice_sessions, page = page)
+
+@app.route('/practice_history/<int:id>')
+@login_required
+def practice_history_id(id):
+    print('Current session: ', session)
+    print(f'/practice_history/{id} route accessed')
+
+    practice_session = get_specific_practice_session(get_db(), session['user_id'], id)
+    if practice_session[1] == 404: # If no such practice session is found
+        return practice_session[0], 404 # practice_session[0] is an error message
+    print(practice_session)
+    return render_template('practice_history.html', id = id, username = session['username'], practice_session = practice_session)
+
 
 
 # ===========================================================
@@ -317,6 +348,15 @@ def add_practice_session():
         return jsonify(message=response[0]), response[1]
     # Handle unexpected response formats
     return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
+
+@app.route('/get_user_sessions', methods = ['GET'])
+@login_required
+def get_user_practice_sessions():
+    print('current session: ', session)
+    print('get_user_sessions route accessed')
+    
+    response = get_all_user_practice_sessions(get_db(), session['user_id'])
+    return response
 
 #======= END ROUTES / API END-POINTS ======= 
 

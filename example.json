@@ -58,6 +58,8 @@
 
 {
     "set_id" : 40,
+    "time_started" : "2024-10-22 16:10:00.000",
+    "time_ended" : "2024-10-22 16:14:00.000",
     "answers_list": [
         {
             "item_id": 1,
