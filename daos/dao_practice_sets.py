@@ -47,14 +47,21 @@ def check_if_set_is_public(request_payload, cursor):
         #raise PermissionError("User is unauthorized to update this set.")
     return True
 
-def get_one_user_practice_sets(connection, user_id):
+def get_one_user_practice_sets(connection, user_id, page = None):
     cursor = connection.cursor()
 
     # Get a list of all sets that were made by the user and those that were not deleted
     query = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
+    #query_page = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
+    
 
     try:
+        # if page:
+            # cursor.execute(query_page, (user_id, page))
+        # else:
         cursor.execute(query, (user_id,))
+        
+
         response = []
 
         for (set_id, username, set_name) in cursor:
@@ -67,6 +74,44 @@ def get_one_user_practice_sets(connection, user_id):
             )
 
         return response, 200
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return str(e), 500
+        
+    finally:
+        cursor.close()
+
+def get_one_user_practice_sets_pagination(connection, user_id, page = None):
+    cursor = connection.cursor()
+    row_count_query = "SELECT COUNT(*) FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
+    row_count_query_params = (user_id,)
+
+    # Get a list of all sets that were made by the user and those that were not deleted
+    query = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0 ORDER BY set_id DESC LIMIT 20 OFFSET %s"
+    offset = (page - 1)* 20 # so that we start with offset 0 instead of 20
+    query_params = (user_id, offset)
+    
+    #query_page = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
+    
+    try:
+        cursor.execute(row_count_query, row_count_query_params)
+        row_count = cursor.fetchone()[0]
+        print(row_count)
+        cursor.execute(query, query_params)
+        
+        response = []
+
+        for (set_id, username, set_name) in cursor:
+            response.append(
+                {
+                    'set_id' : set_id, 
+                    'username' : username,
+                    'set_name' : set_name
+                }
+            )
+
+        return response, row_count, 200
     
     except Exception as e:
         print(f"Error: {e}")

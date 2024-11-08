@@ -12,7 +12,7 @@ import math
 #import logging
 
 from daos.sql_connection import get_sql_connection
-from daos.dao_practice_sets import get_one_user_practice_sets, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
+from daos.dao_practice_sets import get_one_user_practice_sets, get_one_user_practice_sets_pagination, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
 from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
 from daos.dao_users import username_exists, get_user_profile_info
 # App configuration
@@ -22,8 +22,11 @@ CORS(app, resources={r"/*": {"origins": ["http://localhost:5000", "http://127.0.
 app.config['SESSION_COOKIE_SECURE'] = False  # For development without HTTPS
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
+app.config['AVATAR_UPLOAD_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'avatars')
 app.secret_key = os.getenv('SECRET_KEY') # required for session management
 app.permanent_session_lifetime = timedelta(days = 1) # how long a permanent session should last; need to set a session as permanent to be applicable because it is not by default
+
 bcrypt = Bcrypt(app) # For creating password hashes
 
 # Open a database connection at the start of a request and store it in g
@@ -255,6 +258,20 @@ def get_practice_sets():
         return jsonify(message=response[0]), response[1]
     # Handle unexpected response formats
     return jsonify(message="Unexpected response format."), 500  # Return 500 if response is invalid
+
+@app.route('/get_practice_sets/<int:id>')
+@login_required
+def get_practice_sets_page(id):
+    print('Current session: ', session)
+    print(f'/get_practice_sets/{id} route accessed')
+
+    response = get_one_user_practice_sets_pagination(get_db(), session['user_id'], id)
+    print(response)
+    if isinstance(response, tuple):
+        return jsonify(message=response[0], row_count = response[1]), response[2]
+
+    # Handle unexpected response formats
+    return jsonify(message="Unexpected response format."), 500
 
 # Get a specific practice set
 @app.route('/get_full_practice_set', methods = ['GET', 'POST'])
