@@ -203,6 +203,26 @@ def practice(id):
 
     return render_template('practice.html', username = session['username'] if 'username' in session else None, id = id, response = response[0]) # need to pass session username so that nav bar works correctly
 
+@app.route('/edit_set/<int:id>')
+@login_required
+def edit_set(id):
+    print('Current session: ', session)
+    print(f'edit_set/{id} route accessed')
+
+    response = get_specific_practice_set(get_db(), session['user_id'], {'practice_set_id' : id})
+    print(response)
+
+    
+    r_status_code = response[1]
+    if r_status_code == 404: # set not found or no permission for the user
+        return "You don't have permission to view this or this doesn't exist.", 404
+
+    #response = jsonify(response[0])
+    print(response[0], 'xddd')
+
+    return render_template('edit_set.html', username = session['username'], id = id, response = response[0])
+
+
 @app.route('/practice_history')
 @login_required
 def practice_history():

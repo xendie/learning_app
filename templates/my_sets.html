@@ -119,8 +119,8 @@
                         //    console.log(practiceItem.question);
                             table += '<tr data-id="' + index  + '" userId="' + practiceItem.user_id +'">' +
                                     '<td class="index-cell">' + (index + 1) + '</td>' +
-                                    '<td>' + practiceItem.question + '</td>' +
-                                    '<td>' + practiceItem.answer + '</td>'
+                                    '<td class="text-to-speech">' + practiceItem.question + '</td>' +
+                                    '<td class="text-to-speech">' + practiceItem.answer + '</td>'
                                     '<td class="options-cell">' +
                                         '<button onclick="setDelete()" class="btn-edit">Delete</button>' +
                                     '</td>' +
@@ -155,6 +155,14 @@
             let data = {set_id : dataId};
             console.log(data);
         }; */
+        
+        // text to speech
+        /*
+        function speakText(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+            console.log(window.speechSynthesis.getVoices());
+        } */
 
         function backToPracticeSets(){
 
@@ -269,6 +277,13 @@
             getPracticeSets();
             showResponseMessages(); // messages a redirection
 
+            // text to speech
+            /*
+            $(document).on('click', '.text-to-speech', function() {
+                speakText($(this).text());
+                //console.log($(this));
+            });
+            */
         });
     </script>
 {% endblock %}
