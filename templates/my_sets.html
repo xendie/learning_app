@@ -16,7 +16,7 @@
                     <button onclick="backToPracticeSets()" class="btn-back-to-my-sets">Back to my sets</button>
                 </div>
             </div>
-            <table class="practice-sets-table">
+            <table class="practice-sets-table" style="display: none">
                 <thead>
                     <th>No.</th>
                     <th>Set name</th>
@@ -236,6 +236,7 @@
                 success: function(response){
                     console.log('Session data:', response);
                     setsCount = response.row_count;
+                    
 
                     if (response.message) {
                         let table = '';
@@ -254,7 +255,18 @@
                                 '</tr>';
                         });
                         $(".practice-sets-table").find('tbody').empty().html(table);
-                        $(".practice-sets-table").show();
+                        //$(".practice-sets-table").show();
+                        if (setsCount === 0){
+                            $(".practice-sets-table").hide();
+                            console.log('no data');
+                            noSetsMessage = 'Looks like you have not created any practice sets yet.';
+                            $('.display-tables').append('<p>' + noSetsMessage + '</p>');
+                        } else {
+                            $(".practice-sets-table").show();
+                        }
+
+
+
                         paginate(setsCount, 20, page); // totalItems, itemsPerPage, currentPage
                     }
                 },
@@ -274,6 +286,7 @@
         }
 
         $(document).ready(function(){
+            
             getPracticeSets();
             showResponseMessages(); // messages a redirection
 

@@ -9,7 +9,7 @@
             <h1 style="text-align:center">Practice history</h1>
         {% endif %}
         <div class="display-tables">
-            {% if all_practice_sessions %}
+            {% if all_practice_sessions and all_practice_sessions[0] %}
             <table class="full-width-table">
                 <thead>
                     <th>Set name</th>
@@ -30,6 +30,8 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+                <p style="margin-top: 50px">You don't have any practice sessions. Complete a practice session to see their history.</p>
             {% endif %}
             {% if practice_session %}
             <table class="full-width-table">

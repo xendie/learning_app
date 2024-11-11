@@ -38,7 +38,7 @@
     <script>
         const editData = {{ response | tojson }};
         console.log(editData);
-
+        //console.log("hello" + editData[0].set_id);
         $(".new-set-form").on("submit", function(event) { // Prevent the form from submitting the traditional way
                 event.preventDefault();
                 editPracticeSet();
@@ -74,13 +74,26 @@
                     private = this.value;
                 }
             }); // end $(data).each(function()
+
+            let remove_items_list = [] 
+            $(editData).each(function(){
+                remove_items_list.push(this.item_id);
+            });
+            console.log(remove_items_list);
+            
+
             
 
             questions_list = questions_list.filter(item => item !== null); // remove the null item from the last row, otherwise the request will be rejected
             requestPayload = {
+                "set_id" : editData[0].set_id,
                 "set_name" : set_name,
                 "private" : private,
-                "questions_list" : questions_list
+                "add_items" : questions_list,
+                // "add_items" : add_items_list,
+                // "update_items" : update_items_list,
+                 "remove_items" : remove_items_list
+                // "tags" : tags_list
             }
 
             console.log(requestPayload);
@@ -88,7 +101,7 @@
             // Make an API request to update the data for a practice set
             // This code in the ajax request doesn't work now. It's just a copy of the insert from new_set.html. It's to be replaced. Also there is no back-end yet.
             $.ajax({
-                url: 'http://localhost:5000/insert_set',
+                url: 'http://localhost:5000/update_set',
                 type: 'PATCH',
                 contentType: 'application/json',
                 data: JSON.stringify(requestPayload),
@@ -96,6 +109,9 @@
                     console.log("Success:", response);
                     sessionStorage.setItem("responseMessage", response.message); // Store the response to display the response message in the redirected page
                     window.location.href = "/my_sets"; // Redirect to my_sets page
+                    
+                    // write: display "set has been updated" message
+
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Error:", textStatus, errorThrown);

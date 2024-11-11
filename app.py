@@ -260,6 +260,28 @@ def user_profile(username):
 
     return render_template('user.html', username = session['username'] if 'username' in session else None, profile_data = profile_data) # if / else to pass None if the user is not logged in to prevent an error
 
+@app.route('/edit_profile')
+@login_required
+def edit_profile():
+    print('Current session: ', session)
+    print(f'/edit_profile route accessed')
+
+    profile_data = get_user_profile_info(get_db(), session['username'])
+    print(profile_data)
+
+    return render_template('edit_profile.html', profile_data = profile_data)
+
+@app.route('/change_password')
+@login_required
+def change_password():
+    print('Current session: ', session)
+    print(f'/change_password route accessed')
+
+    profile_data = get_user_profile_info(get_db(), session['username'])
+
+    return render_template('change_password.html', profile_data = profile_data)
+
+
 # ===========================================================
 #                           APIs
 # ===========================================================
