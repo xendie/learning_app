@@ -14,7 +14,7 @@ import math
 from daos.sql_connection import get_sql_connection
 from daos.dao_practice_sets import get_one_user_practice_sets, get_one_user_practice_sets_pagination, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
 from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
-from daos.dao_users import username_exists, get_user_profile_info
+from daos.dao_users import username_exists, get_user_profile_info, get_user_password_hash, update_user_password
 # App configuration
 
 app = Flask(__name__)
@@ -67,8 +67,12 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=50)])
     password = PasswordField('Password', validators=[InputRequired()])
     submit = SubmitField('Login')
-
-
+    
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old password', validators=[InputRequired()])
+    new_password = PasswordField('New password', validators=[InputRequired(), Length(min=6, max=100)])
+    confirm_new_password = PasswordField('Confirm new password', validators=[InputRequired(), EqualTo('new_password', message='Passwords must match'), Length(min=6, max=100)])
+    submit = SubmitField('Change password')
 # ======= END FORMS ======= 
 
 #======= FUNCTIONS ======= 
@@ -269,17 +273,39 @@ def edit_profile():
     profile_data = get_user_profile_info(get_db(), session['username'])
     print(profile_data)
 
-    return render_template('edit_profile.html', profile_data = profile_data)
+    return render_template('edit_profile.html', username = session['username'], profile_data = profile_data)
 
-@app.route('/change_password')
+@app.route('/change_password', methods = ['GET','POST'])
 @login_required
 def change_password():
     print('Current session: ', session)
     print(f'/change_password route accessed')
-
+    
     profile_data = get_user_profile_info(get_db(), session['username'])
+    form = ChangePasswordForm()
 
-    return render_template('change_password.html', profile_data = profile_data)
+
+
+    if form.is_submitted():
+        form.validate()
+        print(form.validate())
+        form_old_password = form.old_password.data
+        form_new_password = form.new_password.data
+        form_confirm_new_password = form.confirm_new_password.data
+        db_old_password_hash = str(get_user_password_hash(get_db(), session['user_id'])[0])
+
+        if bcrypt.check_password_hash(db_old_password_hash, form_old_password): # ({hash}, {plaintext}) passwords match
+            if form_new_password == form_confirm_new_password:
+                password_hash = bcrypt.generate_password_hash(form_new_password).decode('utf-8')
+                if update_user_password(get_db(), session['user_id'], password_hash) == True:
+                    flash('Password changed', 'success')
+                    return redirect(url_for('edit_profile'), code = 302)
+                else:
+                    flash('Error')
+        else: # passwords do not match
+            print('Passwords do not match')
+
+    return render_template('change_password.html', username = session['username'], profile_data = profile_data, form = form)
 
 
 # ===========================================================

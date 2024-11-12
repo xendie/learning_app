@@ -60,7 +60,7 @@
             </div>
         </form>
         <p id ="already-have-account">Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
-        <div class"error-messages">
+        <div class="error-messages">
             <p class="danger" id="password-error"></div>
             <p class="danger" id="email-error"></div>
         </div>
@@ -77,6 +77,14 @@
             {% for error in form.email.errors %}
                 <p class="danger">{{ error }}</p>
             {% endfor %}
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div>{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
     </div>
 </div>

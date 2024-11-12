@@ -463,6 +463,15 @@ button.active-page {
 
 }
 
+.change-password-form input{
+  margin: 0.5em 0;
+}
+
+.change-password-container {
+  max-width: 400px;
+  min-width: 400px;
+}
+
 .input-group {
     margin-bottom: 15px;
 }
