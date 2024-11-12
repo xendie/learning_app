@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Practice history{% endblock %}
+{% block content %}
+
+    <div class="main-content">
+        {% if practice_session %}
+            <h1 style="text-align:center">{{practice_session[0][0]['set_name']}}</h1>
+        {% else %}
+            <h1 style="text-align:center">Practice history</h1>
+        {% endif %}
+        <div class="display-tables">
+            {% if all_practice_sessions and all_practice_sessions[0] %}
+            <table class="full-width-table">
+                <thead>
+                    <th>Set name</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                    <th>Completed</th>
+                    <th>Details</th>
+                </thead>
+                <tbody>
+                    {% for row in all_practice_sessions[0] %}
+                        <tr>
+                            <td>{{row['set_name']}}</td>
+                            <td>{{row['answers_correct_percent']}}%</td>
+                            <td>{{row['duration']}}</td>
+                            <td>{% if row['time_ended'] != None %}{{row['time_ended'].strftime('%Y-%m-%d %H:%M')}}{% endif %}</td>
+                            <td><a href="/practice_history/{{row['id']}}"><button>Details</button></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            {% if practice_session %}
+            <table class="full-width-table">
+                <thead>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>Right/Wrong</th>
+                    <th>Response time (min:sec:msec)</th>
+                </thead>
+                <tbody>
+                    {% for row in practice_session[0] %}
+                        <tr class="{{row['user_answer'].lower()}}-answer-result">
+                            <td>{{row['question']}}</td>
+                            <td>{{row['answer']}}</td>
+                            <td>{{row['user_answer']}}</td>
+                            <td>{{row['duration'][4:]}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% if all_practice_sessions and all_practice_sessions[1]['row_count'] > 20 %}
+            <div class="pagination center-flex">
+                {% if not page %}
+                    {% set page = 1 %}
+                {% endif %}
+                {% set prev_page = page - 1 %}
+                {% set next_page = page + 1 %}
+
+                {% if page > 1 and pages != 1 %}
+                    <a  href="{{ url_for('practice_history', page=prev_page) }}"><button>Prev</button></a>
+                {% endif %}
+                {% set pages = (all_practice_sessions[1]['row_count'] / 20) | floor + 2 %}
+                {% for i in range(1, pages) %}
+                    {% if i == page %}
+                        <a href="{{ url_for('practice_history', page=i) }}"><button class="active-page">{{i}}</button></a>
+                    {% else %}
+                        <a href="{{ url_for('practice_history', page=i) }}"><button>{{i}}</button></a>
+                    {% endif %}
+                {% endfor %}
+                {% if next_page != pages and pages != 1 %}
+                    <a href="{{ url_for('practice_history', page=next_page) }}"><button>Next</button></a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

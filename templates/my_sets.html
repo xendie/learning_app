@@ -52,7 +52,7 @@
             //    console.log(data);
 
                 $.ajax({
-                    url: 'http://localhost:5000/delete_set',
+                    url: siteUrl + '/delete_set',
                     method: 'DELETE',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
@@ -97,7 +97,7 @@
             let data = {practice_set_id : dataId}
 
             $.ajax({
-                url: 'http://localhost:5000/get_full_practice_set',
+                url: siteUrl + '/get_full_practice_set',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
@@ -227,7 +227,7 @@
 
         function getPracticeSets(page = '1'){
             $.ajax({
-                url: 'http://localhost:5000/get_practice_sets/' + page,
+                url: siteUrl + '/get_practice_sets/' + page,
                 method: 'GET',
                 dataType: 'json',
                 xhrFields: {

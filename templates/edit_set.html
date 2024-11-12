@@ -101,7 +101,7 @@
             // Make an API request to update the data for a practice set
             // This code in the ajax request doesn't work now. It's just a copy of the insert from new_set.html. It's to be replaced. Also there is no back-end yet.
             $.ajax({
-                url: 'http://localhost:5000/update_set',
+                url: siteUrl + '/update_set',
                 type: 'PATCH',
                 contentType: 'application/json',
                 data: JSON.stringify(requestPayload),

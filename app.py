@@ -18,10 +18,10 @@ from daos.dao_users import username_exists, get_user_profile_info, get_user_pass
 # App configuration
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5000", "http://127.0.0.1:5000"], "supports_credentials": True}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:5000", "http://127.0.0.1:5000"], "supports_credentials": True}}) # Fix CORS errors
 app.config['SESSION_COOKIE_SECURE'] = False  # For development without HTTPS
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY'] = True # Prevent cross-site scripting / Cookie cannot be manipulated by client-side JS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax' # Lax - Protect against CSRF attacks without breaking too many cross-site interactions. Good for balance between security and usability.
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
 app.config['AVATAR_UPLOAD_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'avatars')
 app.secret_key = os.getenv('SECRET_KEY') # required for session management
@@ -249,7 +249,7 @@ def practice_history_id(id):
     if practice_session[1] == 404: # If no such practice session is found
         return practice_session[0], 404 # practice_session[0] is an error message
     print(practice_session)
-    return render_template('practice_history.html', id = id, username = session['username'], practice_session = practice_session)
+    return render_template('practice_history_id.html', id = id, username = session['username'], practice_session = practice_session)
 
 @app.route('/user/<string:username>')
 def user_profile(username):
@@ -457,5 +457,10 @@ def get_user_practice_sessions():
 #======= END ROUTES / API END-POINTS ======= 
 
 if __name__ == '__main__':
-    print('Starting Flask Server')
-    app.run(port = 5000, debug = True)
+    environment = os.getenv('ENVIRONMENT', 'development') # default to 'development' if not found
+    if environment == 'production':
+        print('Starting Flask Production Server')
+        # WSGI server will start the app
+    else:
+        print('Starting Flask Development Server')
+        app.run(port = 5000, debug = True)

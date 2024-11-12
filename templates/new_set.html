@@ -86,7 +86,7 @@
 
             // Make an API request to insert the data collected from .new-set-form
             $.ajax({
-                url: 'http://localhost:5000/insert_set',
+                url: siteUrl + '/insert_set',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(requestPayload),
