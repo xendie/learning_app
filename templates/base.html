@@ -9,17 +9,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
-        <script>
-            $(document).ready(function() {
-                const $mobileMenu = $('#mobile-menu');
-                const $navList = $('.navbar-items');
-
-                $mobileMenu.on('click', function() {
-                    $navList.toggleClass('active'); // toggle hamburger button
-                });
-            });
-            
-        </script>
     </head>
     <body>
 
@@ -40,6 +29,7 @@
                     <li><a href="/practice_history">History</a></li>
                 {% endif %}
                 {% if username %}
+                    <li><a class="mobile-nav-item" href="/user/{{username}}">{{username}}</a></li>
                     <li><a class="mobile-nav-item" href="/logout">Log Out</a></li>
                 {% else %}
                     <li><a class="mobile-nav-item" href="/login">Log In</a></li>
@@ -57,6 +47,7 @@
         
             {% block content %}{% endblock %}
         </div>
+        {% block scripts %}
+        {% endblock %}
     </body>
-    
 </html>

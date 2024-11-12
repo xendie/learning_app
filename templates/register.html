@@ -1,37 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Register{% endblock %}
+
 {% block content %}
-<script>
-    function validateForm() {
-        // reset error messages
-        document.getElementById('password-error').innerText = ''
-        document.getElementById('email-error').innerText = ''
-
-
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm_password').value;
-        const email = document.getElementById('email').value
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        let response = true
-        if (password !== confirmPassword) {
-            document.getElementById('password-error').innerText = 'Passwords must match!';
-            response = false;  // Prevent form submission
-        }
-        // validate e-mail
-        if (!emailPattern.test(email)){
-            document.getElementById('email-error').innerText = 'Enter a proper e-mail address!';
-            response = false;
-        }
-        if (response === true){
-            return true;    
-        } else {
-            return false;
-        // Allow form submission
-        }
-    }
-</script>
-
 <div class="container">
     <div class="register-container">
         <h1 id="register-title">Register</h1>
@@ -77,15 +47,10 @@
             {% for error in form.email.errors %}
                 <p class="danger">{{ error }}</p>
             {% endfor %}
-
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div>{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}

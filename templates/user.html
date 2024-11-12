@@ -14,12 +14,13 @@
                 </div>
             </div>
             <div class="flex-center top-margin">
-                <img src="{{ url_for('static', filename='uploads/avatars/' + profile_data['avatar_url']) }}.jpg" width="200px", height="200px">
-                <h2>{{profile_data['username']}}</h2>
-                <p style="font-size: 0.8em">Joined {{profile_data['created_timestamp'].strftime('%d/%m/%Y')}}</p>
+                {% set avatar_url = profile_data['avatar_url'] if profile_data['avatar_url'] is not none else 'default' %}
+                <img src="{{ url_for('static', filename='uploads/avatars/' + avatar_url) }}.jpg" width="200px", height="200px">
+                <h2>{{profile_data['username'] if profile_data['username'] is not none else 'error loading' }}</h2>
+                <p style="font-size: 0.8em">Joined {{profile_data['created_timestamp'].strftime('%d/%m/%Y') if profile_data['created_timestamp'] is not none else 'error loading'}}</p>
                 <br>
                 <h3>Description</h3>
-                <p>{{profile_data['description']}}</p>
+                <p>{{profile_data['description'] if profile_data['description'] is not none else 'error loading'}}</p>
             </div>
         </div>
     </div>

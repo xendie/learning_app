@@ -262,7 +262,7 @@ def user_profile(username):
     profile_data = get_user_profile_info(get_db(), username)
     print(profile_data)
 
-    return render_template('user.html', username = session['username'] if 'username' in session else None, profile_data = profile_data) # if / else to pass None if the user is not logged in to prevent an error
+    return render_template('user.html', username = session['username'] if 'username' in session else None, profile_data = profile_data if profile_data else None) # if / else to pass None if the user is not logged in to prevent an error
 
 @app.route('/edit_profile')
 @login_required
