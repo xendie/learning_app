@@ -82,6 +82,46 @@ def get_one_user_practice_sets(connection, user_id, page = None):
     finally:
         cursor.close()
 
+def get_public_practice_sets_pagination(connection, page = None):
+    cursor = connection.cursor()
+    
+    row_count_query = "SELECT COUNT(*) AS count FROM practice_set WHERE private = 0 AND is_deleted = 0"
+    
+    query = "SELECT * FROM practice_set WHERE private = 0 AND is_deleted = 0 ORDER BY id DESC LIMIT 20 OFFSET %s"
+    offset = (page - 1) * 20 # so that we start with offset 0 instead of 20
+    params = (offset,)
+
+    try:
+        # Get the count of all public sets rows
+        cursor.execute(row_count_query)
+        row_count = cursor.fetchone()[0]
+        print('row count', row_count)
+
+        # Get info for 20 public sets
+        cursor.execute(query, params)
+        print('executed query')
+        response = []
+
+        for id, user_id, set_name, created_timestamp, last_edited_timestamp, private, is_deleted in cursor:
+            response.append({
+                'id' : id, 
+                'user_id' : user_id, 
+                'set_name' : set_name, 
+                'created_timestamp' : created_timestamp, 
+                'last_edited_timestamp' : last_edited_timestamp, 
+                'private' : private, 
+                'is_deleted' : is_deleted
+            })
+
+        return response, row_count, 200
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return str(e), 500
+        
+    finally:
+        cursor.close()
+
 def get_one_user_practice_sets_pagination(connection, user_id, page = None):
     cursor = connection.cursor()
     row_count_query = "SELECT COUNT(*) FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
@@ -89,15 +129,16 @@ def get_one_user_practice_sets_pagination(connection, user_id, page = None):
 
     # Get a list of all sets that were made by the user and those that were not deleted
     query = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0 ORDER BY set_id DESC LIMIT 20 OFFSET %s"
-    offset = (page - 1)* 20 # so that we start with offset 0 instead of 20
+    offset = (page - 1) * 20 # so that we start with offset 0 instead of 20
     query_params = (user_id, offset)
     
     #query_page = "SELECT set_id, username, set_name FROM v_sets_per_user WHERE user_id = %s AND is_deleted = 0"
     
     try:
+        # Get row count
         cursor.execute(row_count_query, row_count_query_params)
         row_count = cursor.fetchone()[0]
-        print(row_count)
+        # Get user's sets
         cursor.execute(query, query_params)
         
         response = []
@@ -124,13 +165,19 @@ def get_specific_practice_set(connection, user_id, request_payload):
     cursor = connection.cursor()
 
     # Be able to access only those sets that were created by the user or are not private and those that were not deleted
-    query = "SELECT * FROM v_set_questions_all_info WHERE id = %s AND (private = 0 OR user_id = %s) AND is_deleted = 0 AND set_is_deleted = 0" 
-    print(query)
-
     practice_set_id = request_payload['practice_set_id']
-
+    
+    query = ''
+    params = ()
+    if user_id:
+        query = "SELECT * FROM v_set_questions_all_info WHERE id = %s AND (private = 0 OR user_id = %s) AND is_deleted = 0 AND set_is_deleted = 0"
+        params = (practice_set_id, user_id)
+    else:
+        query = "SELECT * FROM v_set_questions_all_info WHERE id = %s AND private = 0 AND is_deleted = 0 AND set_is_deleted = 0"
+        params = (practice_set_id,)
     try:
-        cursor.execute(query, (practice_set_id, user_id))
+        #cursor.execute(query, (practice_set_id, user_id))
+        cursor.execute(query, params)
         response = []
         """
         for row in cursor:
@@ -139,14 +186,14 @@ def get_specific_practice_set(connection, user_id, request_payload):
             response.append(row)
         """
 
-        for (id, item_id, question, answer, user_id, username, set_name, created_timestamp, last_edited_timestamp, private, is_deleted, set_is_deleted) in cursor:
+        for (id, item_id, question, answer, userid, username, set_name, created_timestamp, last_edited_timestamp, private, is_deleted, set_is_deleted) in cursor:
             response.append(
                 {
                     'set_id' : id,
                     'item_id' : item_id,
                     'question' : question,
                     'answer' : answer,
-                    'user_id' : user_id,
+                    'user_id' : userid,
                     'username' : username,
                     'set_name' : set_name,
                     'created_timestamp' : created_timestamp,

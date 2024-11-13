@@ -131,15 +131,22 @@ def get_specific_practice_session(connection, user_id, practice_session):
     cursor = connection.cursor()
     query_params = (practice_session, user_id)
     query = "SELECT * FROM v_practice_session_items WHERE practice_session_id = %s AND user_id = %s"
-    
+    print(f"Query params: {query_params}")
+    print()
     try:
         cursor.execute(query, query_params)
-        if cursor.fetchone() is None:
+        #if cursor.fetchone() is None:
+        #if cursor.fetchone() is None:
+        #    return 'Not found or the session belongs to a different user', 404
+        rows = cursor.fetchall()
+        if not rows:
             return 'Not found or the session belongs to a different user', 404
 
         response = []
 
-        for (practice_session_id, user, question, answer, user_answer, time_started, time_ended, set_name, duration) in cursor:
+        for (practice_session_id, user, question, answer, user_answer, time_started, time_ended, set_name, duration) in rows:
+            print('okay')
+
             response.append({
                 'practice_session_id' : practice_session_id,
                 'user' : user,
@@ -151,6 +158,7 @@ def get_specific_practice_session(connection, user_id, practice_session):
                 'set_name' : set_name,
                 'duration' : duration
             })
+
         return response, 200
 
     except Exception as e:

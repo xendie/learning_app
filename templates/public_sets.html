@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <div class="main-content">
+        <div class="display-tables">
+            <h1>Public sets</h1>
+            <p class="response-message"></p>
+            <div class="options-bar">
+                <div class="options-bar-buttons">
+                    <button onclick="backToPracticeSets()" class="btn-back-to-my-sets">Back to sets</button>
+                </div>
+            </div>
+            <table class="practice-sets-table" style="display: none">
+                <thead>
+                    <th>No.</th>
+                    <th>Set name</th>
+                    <th>Options</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="pagination-container"></div>
+    
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/public_sets.js') }}"></script>
+{% endblock %}

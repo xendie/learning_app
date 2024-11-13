@@ -56,7 +56,10 @@ function showPracticeResults(answers, timeStarted, timeEnded){
     divResults.append($('<p class="practice-score"></p>'))
     tableResults = $('<table class="table-practice-results"><thead><th>Question</th><th>Answer</th><th>Right/Wrong</th><th>Time</th></thead><tbody></tbody></table>');
     divButtons = $('<div class="buttons-practice-results"></div>');
-    divButtons.append('<button onclick="window.location.reload()">Practice again</button><a href="/my_sets"><button>Back to my sets</button></a>');
+    divButtons.append('<button onclick="window.location.reload()">Practice again</button>');
+    if (userLoggedIn){
+        divButtons.append('<a href="/my_sets"><button>Back to my sets</button></a>')
+    }
 
     $('.practice-container').append(divResults);
     $('.practice-container').append(tableResults);

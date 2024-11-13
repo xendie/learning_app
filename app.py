@@ -12,7 +12,7 @@ import math
 #import logging
 
 from daos.sql_connection import get_sql_connection
-from daos.dao_practice_sets import get_one_user_practice_sets, get_one_user_practice_sets_pagination, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites
+from daos.dao_practice_sets import get_one_user_practice_sets, get_one_user_practice_sets_pagination, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites, get_public_practice_sets_pagination
 from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
 from daos.dao_users import username_exists, get_user_profile_info, get_user_password_hash, update_user_password
 # App configuration
@@ -172,6 +172,12 @@ def logout():
         flash('You have been logged out.', 'success')
     return redirect(url_for('home'))
 
+@app.route('/public_sets', methods = ['GET'])
+def public_sets():
+    print('public sets accessed')
+
+    return render_template('public_sets.html', username = session['username'] if 'username' in session else None) # need to pass session so that nav bar works correctly
+
 @app.route('/my_sets')
 @login_required
 def my_sets():
@@ -216,13 +222,12 @@ def edit_set(id):
     response = get_specific_practice_set(get_db(), session['user_id'], {'practice_set_id' : id})
     print(response)
 
-    
     r_status_code = response[1]
     if r_status_code == 404: # set not found or no permission for the user
         return "You don't have permission to view this or this doesn't exist.", 404
 
     #response = jsonify(response[0])
-    print(response[0], 'xddd')
+    print(response[0])
 
     return render_template('edit_set.html', username = session['username'], id = id, response = response[0])
 
@@ -248,7 +253,10 @@ def practice_history_id(id):
     practice_session = get_specific_practice_session(get_db(), session['user_id'], id)
     if practice_session[1] == 404: # If no such practice session is found
         return practice_session[0], 404 # practice_session[0] is an error message
-    print(practice_session)
+    elif practice_session[1] == 501:
+         return practice_session[0], 501 # practice_session[0] is an error message
+    print('practice_session', practice_session)
+    print('practice_session[0]', practice_session[0])
     return render_template('practice_history_id.html', id = id, username = session['username'], practice_session = practice_session)
 
 @app.route('/user/<string:username>')
@@ -283,8 +291,6 @@ def change_password():
     
     profile_data = get_user_profile_info(get_db(), session['username'])
     form = ChangePasswordForm()
-
-
 
     if form.is_submitted():
         form.validate()
@@ -341,16 +347,27 @@ def get_practice_sets_page(id):
     # Handle unexpected response formats
     return jsonify(message="Unexpected response format."), 500
 
+@app.route('/get_public_practice_sets/<int:page_id>', methods = ['GET'])
+def get_public_practice_sets(page_id):
+    #print('Current session: ', session)
+    print(f'/get_public_practice_sets/{page_id} route accessed')
+
+    response = get_public_practice_sets_pagination(get_db(), page_id)
+
+    return jsonify(message = response[0], row_count = response[1]), response[2]
+
+
+
 # Get a specific practice set
 @app.route('/get_full_practice_set', methods = ['GET', 'POST'])
-@login_required
+#@login_required
 def get_full_practice_set():
-    print('current session: ', session)
-    print('get_specific_practice_set route accessed')
+    #print('current session: ', session)
+    print('get_full_practice_set route accessed')
     
     request_payload = request.get_json()
-
-    response = get_specific_practice_set(get_db(), session['user_id'], request_payload)
+    user_id = session['user_id'] if 'user_id' in session else None
+    response = get_specific_practice_set(get_db(), user_id, request_payload)
 
     # Assuming 'response' is a tuple (message, status_code)
     if isinstance(response, tuple) and len(response) == 2:

@@ -1,23 +1,55 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="main-content">
-    {% if username %}
-        <h1 style="margin-top: 20px">Welcome, {{username}}</h1>
-    {% else %}
-        <h1 style="margin-top: 20px">Welcome</h1>
-    {% endif %}
-    <p style="margin-top: 20px">It looks like you've come to the right place to learn!</p>
-    
-    {% if not username %}
-        <p style="margin-top: 20px">Practice with publically available sets or create an account to create your own. Enjoy!</p>
-    {% endif %}
-    {% with messages = get_flashed_messages(with_categories=true)%}
+
+    <div class="column-flex-container">
+
+        {% with messages = get_flashed_messages(with_categories=true)%}
         {% for category, message in messages %}
         <p class="{{category}}">{{message}}</p>
         {% endfor %}
-    {% endwith %}
+        {% endwith %}
+
+        <div class="welcome-section">
+        {% if username %}
+            <h1 class="l-font" style="margin-top: 20px">WELCOME, {{username}}</h1>
+        {% else %}
+            <h1 class="l-font" style="margin-top: 20px">WELCOME</h1>
+        {% endif %}
+        <p style="margin-top: 20px">It looks like you've come to the right place to learn!</p>
+        
+        {% if not username %}
+            <p style="margin-top: 20px">Practice with publically available sets or create an account to create your own. Enjoy!</p>
+        {% endif %}
+        </div>
+        {% if not username %}
+        <div class="sign-up-section transparent-black-bg">
+            <h1 class="xl-font">SIGN UP</h1>
+            <p>Don't have an account yet? Create one to create your own practice sets.</p>
+            <a class="space-above" href="/register"><button>Sign up</button></a>
+        </div>
+        <div style="padding: 30px 0 10px 0" class="flex-center"><h2>OR</h2></div>
+        {% endif %}
+
+        {% if username %}
+        <div style="margin: 10vh 0 3vh 0" class="space-between transparent-black-bg">
+            <h1 class="xl-font">CREATE YOUR OWN SETS</h1>
+            <p>Build personalized practice sets tailored to your learning needs.</p>
+            <div class="two-column-button-container">
+                <a class="space-above" href="/new_set"><button>Create a new set</button></a>
+                <a class="space-above" href="/my_sets"><button>Go to my sets</button></a>
+            </div>
+        </div>
+        <div style="padding: 30px 0 10px 0" class="flex-center"><h2>OR</h2></div>
+        {% endif %}
+
+        <div class="space-between">
+            <h1 class="l-font">EXPLORE PUBLIC SETS</h1>
+            <p>Jump into learning with curated sets available for immediate use.</p>
+            <a class="space-above" href="/public_sets"><button>Public sets</button></a>
+        </div>
+        
+
     </div>
-</div>
+
 {% endblock %}
