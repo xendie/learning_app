@@ -100,7 +100,7 @@ function sendPracticeResults(setId, answers, timeStarted, timeEnded){
     requestPayload = {"set_id" : setId, "answers_list" : answers, "time_started" : timeStarted, "time_ended" : timeEnded};
     
     $.ajax({
-        url: 'http://localhost:5000/add_practice_session',
+        url: siteUrl + '/add_practice_session',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(requestPayload),
