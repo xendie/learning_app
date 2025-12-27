@@ -15,6 +15,11 @@ from daos.sql_connection import get_sql_connection
 from daos.dao_practice_sets import get_one_user_practice_sets, get_one_user_practice_sets_pagination, get_specific_practice_set, insert_practice_set, update_practice_set, delete_practice_set, add_set_to_favorites, remove_set_from_favorites, get_public_practice_sets_pagination
 from daos.dao_practice_sessions import insert_practice_session, get_all_user_practice_sessions, get_specific_practice_session
 from daos.dao_users import username_exists, get_user_profile_info, get_user_password_hash, update_user_password
+import daos.dao_users as dao_users
+
+# Authentication
+from authlib.integrations.flask_client import OAuth
+
 # App configuration
 
 app = Flask(__name__)
@@ -29,6 +34,21 @@ app.permanent_session_lifetime = timedelta(days = 1) # how long a permanent sess
 
 bcrypt = Bcrypt(app) # For creating password hashes
 
+
+# OAuth
+oauth = OAuth(app)
+oauth.register(
+    name='google',
+    client_id=os.getenv('GOOGLE_CLIENT_ID'),
+    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={
+        'scope': 'openid email profile'
+    }
+)
+
+
+# Database
 # Open a database connection at the start of a request and store it in g
 def get_db():
     if 'db' not in g:
@@ -136,6 +156,58 @@ def login():
             flash('Login failed. Check your username and password.', 'danger')
         
     return render_template('login.html', form = form)
+
+
+# START GOOGLE OAUTH ===================
+@app.route('/auth/google')
+def google_login():
+    redirect_uri = url_for('google_callback', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+@app.route('/auth/google/callback')
+def google_callback():
+    connection = get_db()
+
+    token = oauth.google.authorize_access_token()
+    userinfo = token['userinfo']
+
+    if not userinfo:
+        abort(400)
+
+    google_id = userinfo['sub']
+    email = userinfo['email']
+
+    user = dao_users.get_user_by_provider(connection, 'google', google_id)
+    
+    if not user:
+        # Optional: link to existing local account by email
+        user = dao_users.get_user_by_email(connection, email)
+
+        if user:
+            dao_users.link_provider_to_existing_user(
+                connection=connection,
+                user_id=user['id'],
+                provider='google',
+                provider_id=google_id
+            )
+            user = dao_users.get_user_by_provider(connection, 'google', google_id)
+        else:
+            user_id = dao_users.create_oauth_user(
+                connection=connection,
+                email=email,
+                provider='google',
+                provider_id=google_id
+            )
+            user = dao_users.get_user_by_id(connection, user_id)
+
+    session.clear()
+    session['user_id'] = user['id']
+    session['email'] = user['e-mail']
+    session['username'] = user['e-mail']
+
+    return redirect(url_for('home'))
+# END GOOGLE OAUTH ===================
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
