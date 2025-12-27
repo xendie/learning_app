@@ -202,8 +202,9 @@ def google_callback():
 
     session.clear()
     session['user_id'] = user['id']
-    session['email'] = user['e-mail']
+    session['email'] = user['e-mail'] # "-" for users table
     session['username'] = user['e-mail']
+    session['oauth'] = True
 
     return redirect(url_for('home'))
 # END GOOGLE OAUTH ===================
@@ -353,7 +354,7 @@ def edit_profile():
     profile_data = get_user_profile_info(get_db(), session['username'])
     print(profile_data)
 
-    return render_template('edit_profile.html', username = session['username'], profile_data = profile_data)
+    return render_template('edit_profile.html', username = session['username'], profile_data = profile_data, session = session)
 
 @app.route('/change_password', methods = ['GET','POST'])
 @login_required

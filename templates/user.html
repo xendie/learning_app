@@ -5,12 +5,14 @@
         <div class="main-content">
             <div class="options-bar">
                 <div class="options-bar-buttons">
-                    <a href="/change_password">
-                        <button class="btn-new-set">Change password</button>
-                    </a>
-                    <a href="/edit_profile">
-                        <button>Edit profile</button>
-                    </a>
+                    {% if not session['oauth'] %}
+                        <a href="/change_password">
+                            <button class="btn-new-set">Change password</button>
+                        </a>
+                    {% endif %}
+                        <a href="/edit_profile">
+                            <button>Edit profile</button>
+                        </a>
                 </div>
             </div>
             <div class="flex-center top-margin">
