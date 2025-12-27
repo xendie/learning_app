@@ -109,6 +109,19 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+def disabled_in_oauth(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        print('current session: ', session)
+        if session['oauth']:
+            flash(f"Your account is authenticated by {session['provider']} and you don't need a password.", 'warning')
+            print('redirecting the user to home page')
+            return redirect(url_for('home'), code = 302)
+
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.template_filter('floor')
 def floor_filter(value):
     """Returns the floor of the value."""
@@ -205,6 +218,7 @@ def google_callback():
     session['email'] = user['e-mail'] # "-" for users table
     session['username'] = user['e-mail']
     session['oauth'] = True
+    session['provider'] = 'Google'
 
     return redirect(url_for('home'))
 # END GOOGLE OAUTH ===================
@@ -358,6 +372,7 @@ def edit_profile():
 
 @app.route('/change_password', methods = ['GET','POST'])
 @login_required
+@disabled_in_oauth
 def change_password():
     print('Current session: ', session)
     print(f'/change_password route accessed')

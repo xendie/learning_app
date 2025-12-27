@@ -5,21 +5,20 @@
         <div class="main-content">
             <div class="options-bar">
                 <div class="options-bar-buttons">
-                    <a href="/change_password">
-                        <button class="btn-new-set">Change password</button>
-                    </a>
-                    <a href="/edit_profile">
-                        <button>Edit profile</button>
+                    <a href="/user/{{ session['username'] }}">
+                        <button>Back to profile</button>
                     </a>
                 </div>
             </div>
             <div class="flex-center top-margin">
-                <img src="{{ url_for('static', filename='uploads/avatars/' + profile_data['avatar_url']) }}.jpg" width="200px", height="200px">
+                <img class="profile-picture" src="{{ url_for('static', filename='uploads/avatars/' + profile_data['avatar_url']) }}.jpg" width="200px", height="200px">
+                <!--Upload new profile picture here.-->
                 <h2>{{profile_data['username']}}</h2>
                 <p style="font-size: 0.8em">Joined {{profile_data['created_timestamp'].strftime('%d/%m/%Y')}}</p>
                 <br>
                 <h3>Description</h3>
-                <p>{{profile_data['description']}}</p>
+                <textarea style="max-width: 1000px;" class="flex-center" autofocus>{{profile_data['description']}}</textarea>
+                <button>Placeholder Save</button>
                 <div class="flash-messages">
                     {% with messages = get_flashed_messages(category_filter=["success"]) %}
                         {% if messages %}

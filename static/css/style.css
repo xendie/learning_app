@@ -791,8 +791,19 @@ textarea {
 textarea:focus {
   outline: none;
   color: white;
+  border: 1px solid #ccc;
 }
 
+
+.profile-picture{
+    transition: 0.5s;
+    cursor: pointer; 
+    /* Change photo (photo logo)*/
+    
+}
+.profile-picture:hover {
+  filter: brightness(0.5);
+}
 
 .modal {
     top: 50%;
