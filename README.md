@@ -12,3 +12,11 @@ Some of the features:
 
 The app isn't finished and fully functional yet.
 More documentation to be written.
+
+
+**Virtual environment (optional)**
+Create a virtual environment by
+`python -m venv .venv`
+Activate `source .venv/bin/activate`
+
+Run `python install_requirements.py` to install dependencies
