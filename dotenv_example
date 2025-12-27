@@ -1,0 +1,6 @@
+ENVIRONMENT=production
+DB_USER=username
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_NAME=learning_app
+SECRET_KEY=randomly_generated_string
